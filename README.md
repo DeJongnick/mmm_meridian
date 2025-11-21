@@ -114,7 +114,7 @@ The dataset contains weekly aggregated data including:
 
 1. **Navigate to the project directory**
    ```bash
-   cd POC
+   cd mmm_meridian
    ```
 
 2. **Create a virtual environment**
@@ -153,7 +153,7 @@ The dataset contains weekly aggregated data including:
 ## 📁 Project Structure
 
 ```
-POC/
+mmm_meridian/
 ├── configs/                    # YAML configuration files
 │   ├── config_v1.yaml          # Primary configuration
 │   └── config_v2.yaml          # Alternative configuration
@@ -182,18 +182,19 @@ POC/
 │   └── data_exploration.ipynb  # Data exploration and analysis
 │
 ├── requirements.txt            # Python dependencies
+├── .gitignore                  # Git ignore rules
 └── README.md                   # This file
 ```
 
 ## 🎯 Usage
 
-> **⚠️ Important**: All scripts must be run from the **POC directory** with the virtual environment activated.
+> **⚠️ Important**: All scripts must be run from the **mmm_meridian directory** with the virtual environment activated.
 
 ### Quick Start
 
-1. **Navigate to POC directory**:
+1. **Navigate to mmm_meridian directory**:
    ```bash
-   cd POC
+   cd mmm_meridian
    ```
 
 2. **Activate the virtual environment**:
@@ -205,12 +206,9 @@ POC/
    .venv\Scripts\activate
    ```
 
-3. **Run scripts from POC directory**:
+3. **Run scripts from mmm_meridian directory**:
    ```bash
-   # Option 1: Use the helper script (recommended)
-   ./run.sh run.py
-   
-   # Option 2: Run directly with Python
+   # Run directly with Python
    python scripts/run.py
    ```
 
@@ -218,21 +216,21 @@ POC/
 
 **Interactive mode** (selects configuration file interactively):
 ```bash
-cd POC
+cd mmm_meridian
 source .venv/bin/activate  # macOS/Linux
 python scripts/run.py
 ```
 
 **Specify configuration file**:
 ```bash
-cd POC
+cd mmm_meridian
 source .venv/bin/activate
 python scripts/run.py --config config_v1.yaml
 ```
 
 **List available configurations**:
 ```bash
-cd POC
+cd mmm_meridian
 source .venv/bin/activate
 python scripts/run.py --list-configs
 ```
@@ -483,12 +481,12 @@ pip install --upgrade google-meridian
 ```
 
 **Issue: Virtual environment path incorrect**
-- Ensure you're using `.venv` in the `POC/` directory, not at the project root
-- Correct path: `/Users/perso/Documents/ROIxplain/POC/.venv`
-- Activate with: `source POC/.venv/bin/activate`
+- Ensure you're using `.venv` in the `mmm_meridian/` directory
+- Correct path: `/path/to/mmm_meridian/.venv`
+- Activate with: `source mmm_meridian/.venv/bin/activate`
 
 **Issue: Data file not found**
-- Verify CSV path in `configs/*.yaml` is relative to `POC/` directory
+- Verify CSV path in `configs/*.yaml` is relative to `mmm_meridian/` directory
 - Check that `data/processed/data_processed.csv` exists
 - Use absolute paths if needed
 
@@ -545,6 +543,3 @@ The Google Meridian library is subject to its own license terms. Please refer to
 
 ---
 
-**Built with** ❤️ **for marketing analytics**
-
-*Powered by [Google Meridian](https://github.com/google/meridian)*
