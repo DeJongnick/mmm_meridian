@@ -43,7 +43,7 @@ The dataset contains weekly aggregated data including:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         DATA PREPARATION                         │
+│                         DATA PREPARATION                        │
 │  ┌──────────────┐                                               │
 │  │  Raw CSV     │  →  Processed CSV (data/processed/)           │
 │  │  (Kaggle)    │                                               │
@@ -51,54 +51,54 @@ The dataset contains weekly aggregated data including:
 └─────────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│                      CONFIGURATION LOADING                       │
+│                      CONFIGURATION LOADING                      │
 │  ┌──────────────┐                                               │
-│  │  YAML Config │  →  Column mapping, model params, sampling   │
+│  │  YAML Config │  →  Column mapping, model params, sampling    │
 │  │  (configs/)  │                                               │
 │  └──────────────┘                                               │
 └─────────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │                    GOOGLE MERIDIAN PIPELINE                     │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  1. DataLoader: DataFrameDataLoader                       │  │
-│  │     - Load CSV data                                       │  │
-│  │     - Map columns (time, geo, KPI, media, spend)         │  │
-│  │     - Create Meridian data structure                     │  │
-│  └──────────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  1. DataLoader: DataFrameDataLoader                      │   │
+│  │     - Load CSV data                                      │   │
+│  │     - Map columns (time, geo, KPI, media, spend)         │   │
+│  │     - Create Meridian data structure                     │   │
+│  └──────────────────────────────────────────────────────────┘   │
 │                            ↓                                    │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  2. Model Specification: ModelSpec                        │  │
-│  │     - max_lag: Carryover effect window                    │  │
-│  │     - n_hidden_units: Neural network capacity            │  │
-│  │     - n_fourier_nodes: Seasonality modeling               │  │
-│  │     - n_spline_knots: Trend flexibility                  │  │
-│  └──────────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  2. Model Specification: ModelSpec                       │   │
+│  │     - max_lag: Carryover effect window                   │   │
+│  │     - n_hidden_units: Neural network capacity            │   │
+│  │     - n_fourier_nodes: Seasonality modeling              │   │
+│  │     - n_spline_knots: Trend flexibility                  │   │
+│  └──────────────────────────────────────────────────────────┘   │
 │                            ↓                                    │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  3. Model Training: Meridian                              │  │
-│  │     - Initialize Bayesian model                           │  │
-│  │     - Set feature priors (Beta distributions)            │  │
-│  │     - MCMC sampling (n_chains, n_adapt, n_burnin, n_keep)│  │
-│  │     - Posterior inference                                 │  │
-│  └──────────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  3. Model Training: Meridian                             │   │
+│  │     - Initialize Bayesian model                          │   │
+│  │     - Set feature priors (Beta distributions)            │   │
+│  │     - MCMC sampling (n_chains, n_adapt, n_burnin, n_keep)│   │
+│  │     - Posterior inference                                │   │
+│  └──────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │                      OUTPUT GENERATION                          │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │ model.pkl    │  │ metadata.yaml│  │ report_data  │          │
-│  │ (Trained     │  │ (Config,     │  │ .html        │          │
-│  │  Model)      │  │  Hash, Date)│  │ (Meridian    │          │
-│  └──────────────┘  └──────────────┘  │  Report)     │          │
-│                                      └──────────────┘          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
+│  │ model.pkl    │  │ metadata.yaml│  │ report_data  │           │
+│  │ (Trained     │  │ (Config,     │  │ .html        │           │
+│  │  Model)      │  │  Hash, Date) │  │ (Meridian    │           │
+│  └──────────────┘  └──────────────┘  │  Report)     │           │
+│                                      └──────────────┘           │
 │                            ↓                                    │
-│                    ┌──────────────┐                            │
-│                    │ custom_report│                            │
-│                    │ .html       │                            │
-│                    │ (Enhanced   │                            │
-│                    │  Insights)  │                            │
-│                    └──────────────┘                            │
+│                    ┌──────────────┐                             │
+│                    │ custom_report│                             │
+│                    │ .html        │                             │
+│                    │ (Enhanced    │                             │ 
+│                    │  Insights)   │                             │
+│                    └──────────────┘                             │ 
 └─────────────────────────────────────────────────────────────────┘
 ```
 
