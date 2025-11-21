@@ -292,6 +292,61 @@ python scripts/custom_report.py
 - **Channel Contribution**: Breakdown of each channel's impact
 - **Actionable Insights**: Data-driven recommendations for marketing teams
 
+#### 📝 Insights & Recommendations
+
+The custom report currently generates insights using rule-based logic. **For enhanced and more contextualized insights, it is strongly recommended to use LLM/SLM (Large/Small Language Models) with Agent frameworks** to adapt the insights to your specific results and business context.
+
+**Benefits of using LLM/SLM Agents for insights generation**:
+- **Contextual adaptation**: Insights are dynamically generated based on your specific model results, business goals, and market conditions
+- **Natural language explanations**: More intuitive and actionable recommendations in natural language
+- **Multi-dimensional analysis**: Agents can synthesize information from multiple metrics simultaneously (R², ROI, contribution, time series patterns)
+- **Personalized recommendations**: Tailored to your industry, company size, and marketing strategy
+- **Interactive scenarios**: Generate what-if scenarios and budget optimization strategies
+
+**Possible enhancements to the custom report**:
+
+1. **Dynamic Layouts**
+   - Interactive dashboards with customizable widget arrangements
+   - Responsive layouts adapting to different screen sizes
+   - Expandable/collapsible sections for detailed analysis
+
+2. **Scenario Planning & What-If Analysis**
+   - Budget reallocation simulators
+   - Scenario comparison (current vs. optimized vs. aggressive)
+   - Sensitivity analysis for different budget allocations
+   - Expected ROI projections for various spend levels
+
+3. **Saturation Curves**
+   - Visual representation of diminishing returns per channel
+   - Optimal spend level identification
+   - Marginal ROI curves showing efficiency drops
+   - Channel-specific saturation points
+
+4. **Time-Based Insights**
+   - Seasonality impact visualization
+   - Trend analysis and forecasting
+   - Carryover effect timelines
+   - Optimal timing recommendations
+
+5. **Advanced Visualizations**
+   - Interactive charts with drill-down capabilities
+   - Heatmaps for multi-dimensional analysis
+   - Waterfall charts for budget impact analysis
+   - Funnel visualizations for conversion paths
+
+6. **LLM/SLM-Powered Features**
+   - Natural language query interface ("What if I increase TikTok budget by 20%?")
+   - Automated insight generation from model outputs
+   - Contextual recommendations based on historical performance
+   - Competitive benchmarking suggestions
+   - Risk assessment and mitigation strategies
+
+**Implementation suggestions**:
+- Integrate with OpenAI GPT, Anthropic Claude, or open-source LLMs (Llama, Mistral)
+- Use LangChain or LlamaIndex for agent orchestration
+- Implement retrieval-augmented generation (RAG) to incorporate model outputs
+- Create prompt templates that include R² scores, ROI metrics, and channel performance data
+
 ## ⚙️ Configuration
 
 Configuration files (`configs/*.yaml`) define all aspects of the modeling process:
