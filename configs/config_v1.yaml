@@ -1,0 +1,75 @@
+default_dataset: weekly_applications
+
+weekly_applications:
+  # --- DATA ---
+  csv_path: "data/processed/data_processed.csv"
+  kpi_type: "revenue"
+
+  # --- COLUMNS ---
+  columns:
+    time: "Date"
+    geo: "Geo"
+    kpi: "Sales"
+    media:
+      - "TikTok"
+      - "Facebook"
+      - "Google Ads"
+    media_spend:
+      - "TikTok"
+      - "Facebook"
+      - "Google Ads"
+    controls: []
+
+  # --- MEDIA TO CHANNEL MAPPINGS ---
+  media_to_channel:
+    "TikTok": "TikTok"
+    "Facebook": "Facebook"
+    "Google Ads": "Google Ads"
+
+  media_spend_to_channel:
+    "TikTok": "TikTok"
+    "Facebook": "Facebook"
+    "Google Ads": "Google Ads"
+
+  # --- FEATURE DISTRIBUTION PARAMETERS (priors adjusted to capture variations) ---
+  # Note: Since we use spend as a proxy for impressions,
+  # the same columns are used for media and media_spend
+  features:
+    "TikTok":
+      distribution: "beta"
+      loc: 0.0
+      scale: 1.0
+      alpha: 1.10
+      beta: 1.15
+    "Facebook":
+      distribution: "beta"
+      loc: 0.0
+      scale: 1.0
+      alpha: 1.10
+      beta: 1.15
+    "Google Ads":
+      distribution: "beta"
+      loc: 0.0
+      scale: 1.0
+      alpha: 1.10
+      beta: 1.15
+
+  # --- MODEL CONFIGURATION ---
+  model:
+    max_lag: 12              # Increased memory for the past to capture longer-term variations
+    n_hidden_units: 32       # More flexibility for complex variations
+    n_fourier_nodes: 12      # Richer seasonal and temporal patterns
+    n_spline_knots: 16       # More details on flexible trends
+
+  # --- MCMC SAMPLING ---
+  sampling:
+    n_chains: 6             # More chains for better exploration
+    n_adapt: 4000           # Much longer adaptation for stability across variations
+    n_burnin: 800
+    n_keep: 2000            # More samples to better reflect variability
+
+  # --- REPORT ---
+  report:
+    start_date: "2018-01-07"
+    end_date: "2021-10-31"
+    output_html: "outputs/report_data.html"

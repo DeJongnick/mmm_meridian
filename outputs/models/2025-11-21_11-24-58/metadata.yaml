@@ -1,0 +1,31 @@
+config_file: ../configs/config_v1.yaml
+created_at: '2025-11-21T11:26:04.928134'
+created_date: 2025-11-21_11-24-58
+data_columns:
+- Date
+- TikTok
+- Facebook
+- Google Ads
+- Sales
+- Geo
+data_file: null
+data_hash: 9e1cf6c5bc1ebb68
+data_shape: !!python/tuple
+- 200
+- 6
+date_range:
+  end: '2021-10-31 00:00:00'
+  start: '2018-01-07 00:00:00'
+folder_name: 2025-11-21_11-24-58
+model_config:
+  kpi_type: revenue
+  model_params:
+    max_lag: 12
+    n_fourier_nodes: 12
+    n_hidden_units: 32
+    n_spline_knots: 16
+  sampling:
+    n_adapt: 4000
+    n_burnin: 800
+    n_chains: 6
+    n_keep: 2000

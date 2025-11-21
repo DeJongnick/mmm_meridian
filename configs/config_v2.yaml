@@ -1,0 +1,75 @@
+default_dataset: weekly_applications
+
+weekly_applications:
+  # --- DATA ---
+  csv_path: "data/processed/data_processed.csv"
+  kpi_type: "revenue"
+
+  # --- COLUMNS ---
+  columns:
+    time: "Date"
+    geo: "Geo"
+    kpi: "Sales"
+    media:
+      - "TikTok"
+      - "Facebook"
+      - "Google Ads"
+    media_spend:
+      - "TikTok"
+      - "Facebook"
+      - "Google Ads"
+    controls: []
+
+  # --- MEDIA TO CHANNEL MAPPINGS ---
+  media_to_channel:
+    "TikTok": "TikTok"
+    "Facebook": "Facebook"
+    "Google Ads": "Google Ads"
+
+  media_spend_to_channel:
+    "TikTok": "TikTok"
+    "Facebook": "Facebook"
+    "Google Ads": "Google Ads"
+
+  # --- FEATURE DISTRIBUTION PARAMETERS (parameters set for poor R2 performance) ---
+  # Note: Since we use spend as a proxy for impressions,
+  # the same columns are used for media and media_spend
+  features:
+    "TikTok":
+      distribution: "beta"
+      loc: 0.5       # Targets a region far from origin for "poor" fit
+      scale: 2.0     # Extends well outside [0, 1]
+      alpha: 0.2     # Very noisy, flat distribution
+      beta: 0.2
+    "Facebook":
+      distribution: "beta"
+      loc: 0.5
+      scale: 2.0
+      alpha: 0.2
+      beta: 0.2
+    "Google Ads":
+      distribution: "beta"
+      loc: 0.5
+      scale: 2.0
+      alpha: 0.2
+      beta: 0.2
+
+  # --- MODEL CONFIGURATION ---
+  model:
+    max_lag: 0              # No lag memory - no temporal dynamics
+    n_hidden_units: 1       # Almost no learning capacity
+    n_fourier_nodes: 0      # No seasonality
+    n_spline_knots: 1       # No trend flexibility
+
+  # --- MCMC SAMPLING ---
+  sampling:
+    n_chains: 1             # Minimal exploration, random noise
+    n_adapt: 50             # Almost no adaptation
+    n_burnin: 10
+    n_keep: 10              # Very few samples for noise & instability
+
+  # --- REPORT ---
+  report:
+    start_date: "2018-01-07"
+    end_date: "2021-10-31"
+    output_html: "outputs/report_data.html"

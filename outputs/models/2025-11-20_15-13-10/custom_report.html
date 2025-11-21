@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MMM Report - 2025-11-20_15-13-10</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+           <link rel="preconnect" href="https://fonts.googleapis.com" />
+           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+           <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+           <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+           <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --secondary-dark: #7c3aed;
+        --accent: #ec4899;
+        --success: #10b981;
+        --success-light: #34d399;
+        --warning: #f59e0b;
+        --warning-light: #fbbf24;
+        --danger: #ef4444;
+        --danger-light: #f87171;
+        --info: #3b82f6;
+        --info-light: #60a5fa;
+        --bg: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-gradient-start: #667eea;
+        --bg-gradient-end: #764ba2;
+        --text: #1e293b;
+        --text-muted: #64748b;
+        --text-light: #94a3b8;
+        --border: #e2e8f0;
+        --border-light: #f1f5f9;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        --radius: 12px;
+        --radius-sm: 8px;
+        --radius-lg: 16px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 100%);
+        background-attachment: fixed;
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Header */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-lg);
+        padding: 3rem 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-xl);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+      }
+
+      .header-content h1 {
+        font-size: 2.75rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+      }
+
+      .subtitle {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-bottom: 1.5rem;
+      }
+
+      .header-meta {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+        color: white;
+        padding: 0.625rem 1.25rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 600;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.2s ease;
+      }
+
+      .badge:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .badge-icon {
+        font-size: 1.1rem;
+      }
+
+      /* Section */
+      .section {
+        margin-bottom: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 1.875rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title::before {
+        content: '';
+        width: 5px;
+        height: 28px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border-radius: 3px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* Grid */
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .grid.vertical {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-full {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .grid:not(.vertical) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Card */
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .card:hover {
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-4px);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.75rem 2rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border-bottom: 2px solid var(--border-light);
+      }
+
+      .card-icon {
+        font-size: 2rem;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover .card-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .card-header h2 {
+        font-size: 1.375rem;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+      }
+
+      .card-content {
+        padding: 2rem;
+      }
+
+      .chart-card {
+        min-height: 500px;
+      }
+
+      /* Center visualizations */
+      .chart-card .card-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .chart-card .card-content > p {
+        text-align: center;
+        max-width: 800px;
+      }
+
+      .chart-card .card-content > div:not(.placeholder),
+      .chart-card .card-content > chart,
+      .chart-card .card-content > chart-embed,
+      .chart-card .card-content #model-fit-chart,
+      .chart-card .card-content #contribution-channel-chart {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+      }
+
+      .chart-card .card-content #vega-vis,
+      .chart-card .card-content .vega-embed {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+      }
+
+      /* Stats */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .stat-card {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        padding: 2rem;
+        border-radius: var(--radius-lg);
+        border: 2px solid rgba(99, 102, 241, 0.2);
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .stat-card:hover {
+        border-color: var(--primary);
+        transform: scale(1.03);
+        box-shadow: var(--shadow-md);
+      }
+
+      .stat-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .stat-value {
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .quality-badge {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .quality-badge.excellent {
+        background: linear-gradient(135deg, var(--success-light) 0%, var(--success) 100%);
+        color: white;
+      }
+
+      .quality-badge.good {
+        background: linear-gradient(135deg, var(--info-light) 0%, var(--info) 100%);
+        color: white;
+      }
+
+      .quality-badge.improve {
+        background: linear-gradient(135deg, var(--warning-light) 0%, var(--warning) 100%);
+        color: white;
+      }
+
+      /* Info Button */
+      .info-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding: 0.625rem 1.25rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border: 2px solid var(--primary);
+        border-radius: var(--radius);
+        color: var(--primary);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .info-button:hover {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .info-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* R2 Dropdown */
+      .r2-dropdown {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease, margin 0.5s ease;
+        margin-top: 0;
+      }
+
+      .r2-dropdown.open {
+        max-height: 600px;
+        margin-top: 1.5rem;
+      }
+
+      .r2-dropdown-content {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        padding: 2rem;
+        border-radius: var(--radius-lg);
+        border: 2px solid rgba(99, 102, 241, 0.2);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .r2-dropdown-content h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text);
+      }
+
+      .r2-dropdown-content p {
+        margin-bottom: 1rem;
+        color: var(--text);
+        line-height: 1.8;
+      }
+
+      /* ROI Visualization */
+      .roi-visualization {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .roi-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 1.75rem;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%);
+        border: 2px solid rgba(16, 185, 129, 0.2);
+        border-radius: var(--radius-lg);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .roi-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+      }
+
+      .roi-item:hover {
+        border-color: var(--success);
+        box-shadow: var(--shadow-md);
+        transform: translateX(8px);
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+      }
+
+      .roi-item:hover::before {
+        transform: scaleY(1);
+      }
+
+      .roi-item-content {
+        flex: 1;
+      }
+
+      .roi-channel-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+      }
+
+      .roi-description {
+        font-size: 0.9375rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .roi-value-container {
+        text-align: center;
+        padding-left: 2rem;
+        border-left: 2px solid rgba(16, 185, 129, 0.3);
+      }
+
+      .roi-value {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.02em;
+      }
+
+      .roi-label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+      }
+
+      /* Insights */
+      .insights-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .insight-item {
+        padding: 1.75rem;
+        border-radius: var(--radius-lg);
+        border-left: 5px solid;
+        background: var(--bg);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .insight-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .insight-item:hover {
+        transform: translateX(8px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .insight-item.success {
+        border-left-color: var(--success);
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%);
+      }
+
+      .insight-item.success::before {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+      }
+
+      .insight-item.info {
+        border-left-color: var(--info);
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.03) 100%);
+      }
+
+      .insight-item.info::before {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
+      }
+
+      .insight-item.warning {
+        border-left-color: var(--warning);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.03) 100%);
+      }
+
+      .insight-item.warning::before {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
+      }
+
+      .insight-item.danger {
+        border-left-color: var(--danger);
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%);
+      }
+
+      .insight-item.danger::before {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+      }
+
+      .insight-item:hover::before {
+        opacity: 1;
+      }
+
+      .insight-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+      }
+
+      .insight-description {
+        font-size: 0.9375rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        line-height: 1.8;
+      }
+
+      .insight-action {
+        font-size: 0.875rem;
+        color: var(--text);
+        font-weight: 600;
+        padding: 0.875rem 1.25rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* Placeholder */
+      .placeholder {
+        padding: 4rem 2rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        border: 2px dashed rgba(99, 102, 241, 0.3);
+        border-radius: var(--radius-lg);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem 0.5rem;
+        }
+
+        .header {
+          padding: 2rem 1.5rem;
+        }
+
+        .header-content h1 {
+          font-size: 2rem;
+        }
+
+        .card-content {
+          padding: 1.5rem;
+        }
+
+        .roi-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .roi-value-container {
+          border-left: none;
+          border-top: 2px solid rgba(16, 185, 129, 0.3);
+          padding-left: 0;
+          padding-top: 1rem;
+          margin-top: 1rem;
+          width: 100%;
+        }
+
+        .stat-value {
+          font-size: 2.5rem;
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+        }
+      }
+
+      /* Chart container styling */
+      .card-content p {
+        margin-bottom: 1.5rem;
+        color: var(--text-muted);
+        line-height: 1.8;
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Additional animations */
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .badge {
+        animation: pulse 3s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-content">
+          <h1>Media Mix Modeling Report</h1>
+          <p class="subtitle">Detailed analysis of model performance</p>
+                 <div class="header-meta">
+                   <div class="badge">
+                     <span class="badge-icon">🏷️</span>
+                     <span>Model: 2025-11-20_15-13-10</span>
+                   </div>
+                   <div class="badge"><span class="badge-icon">📅</span><span>Period: 2018-01-07 → 2021-10-31</span></div>
+                 </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2 class="section-title">Overview</h2>
+        <div class="grid">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">⚡</div>
+              <h2>Model Performance</h2>
+            </div>
+            <div class="card-content">
+              
+              <div class="stats-grid" style="margin-top: 24px;">
+                <div class="stat-card">
+                  <div class="stat-value">0.780</div>
+                  <div class="stat-label">R² Score</div>
+                  <div class="quality-badge excellent">✓ Excellent</div>
+                </div>
+              </div>
+              
+              <button class="info-button" onclick="toggleR2Info()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Info</span>
+              </button>
+              
+              <div class="r2-dropdown" id="r2-dropdown">
+                <div class="r2-dropdown-content">
+                  <h3>📚 What is the R² Score?</h3>
+                  <p>
+                    The <strong>R² (coefficient of determination)</strong> measures the quality of the model's fit to observed data. 
+                    It indicates the <strong>percentage of variation</strong> in your data that is explained by the model.
+                  </p>
+                  <p>
+                    <strong>Your model interpretation:</strong><br>
+                    <strong>R² = 0.780 (≥ 0.75)</strong>: The model explains at least 75% of the variation in your data. This is an <strong>excellent</strong> fit indicating that the model captures trends and relationships in your marketing data very well.
+                  </p>
+                  <p style="font-size: 0.85rem; font-style: italic; margin-top: 12px;">
+                    The closer R² is to 1, the more accurately the model can predict observed results.
+                  </p>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">💹</div>
+              <h2>ROI by Media Channel</h2>
+            </div>
+            <div class="card-content">
+              <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px;">
+                Return on investment for each dollar spent per channel
+              </p>
+              
+              <div class="roi-visualization">
+                
+                <div class="roi-item">
+                  <div class="roi-item-content">
+                    <div class="roi-channel-name">Google Ads</div>
+                    <div class="roi-description">
+                      For <strong>$1 invested</strong> in Google Ads → ROI = <strong>$1.13</strong>
+                    </div>
+                  </div>
+                  <div class="roi-value-container">
+                    <div class="roi-value">1.13</div>
+                    <div class="roi-label">ROI</div>
+                  </div>
+                </div>
+                
+                <div class="roi-item">
+                  <div class="roi-item-content">
+                    <div class="roi-channel-name">Facebook</div>
+                    <div class="roi-description">
+                      For <strong>$1 invested</strong> in Facebook → ROI = <strong>$0.50</strong>
+                    </div>
+                  </div>
+                  <div class="roi-value-container">
+                    <div class="roi-value">0.50</div>
+                    <div class="roi-label">ROI</div>
+                  </div>
+                </div>
+                
+                <div class="roi-item">
+                  <div class="roi-item-content">
+                    <div class="roi-channel-name">TikTok</div>
+                    <div class="roi-description">
+                      For <strong>$1 invested</strong> in TikTok → ROI = <strong>$0.37</strong>
+                    </div>
+                  </div>
+                  <div class="roi-value-container">
+                    <div class="roi-value">0.37</div>
+                    <div class="roi-label">ROI</div>
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2 class="section-title">Visualizations</h2>
+        <div class="grid vertical">
+          <div class="card chart-card">
+            <div class="card-header">
+              <div class="card-icon">📈</div>
+              <h2>Model Fit</h2>
+            </div>
+            <div class="card-content">
+              <p>Comparison between expected revenues from the model and observed actual revenues, allowing to evaluate prediction accuracy.</p>
+              <chart>
+  <chart-embed id="model-fit-chart"></chart-embed>
+  
+    
+  
+</chart>
+
+<script type="text/javascript">
+  (() => {
+    const opt = {
+      mode: 'vega-lite',
+      width: 'container',
+      autosize: { type: 'fit', contains: 'padding' }
+    };
+    const spec = JSON.parse("{\"$schema\": \"https://vega.github.io/schema/vega-lite/v5.20.1.json\", \"config\": {\"axis\": {\"labelColor\": \"#5F6368\", \"labelFont\": \"Roboto\", \"labelFontSize\": 12, \"titleColor\": \"#5F6368\", \"titleFont\": \"Roboto\", \"titleFontSize\": 12, \"titleFontWeight\": \"normal\"}, \"view\": {\"continuousHeight\": 300, \"continuousWidth\": 300}}, \"data\": {\"name\": \"data-dcac90befc32a78f3c2e0b0cd64c2521\"}, \"datasets\": {\"data-dcac90befc32a78f3c2e0b0cd64c2521\": [{\"ci_hi\": 9779.7998046875, \"ci_lo\": 9779.7998046875, \"mean\": 9779.7998046875, \"time\": \"2018-01-07\", \"type\": \"actual\"}, {\"ci_hi\": 11572.9765625, \"ci_lo\": 10711.5419921875, \"mean\": 11172.2314453125, \"time\": \"2018-01-07\", \"type\": \"expected\"}, {\"ci_hi\": 13245.1904296875, \"ci_lo\": 13245.1904296875, \"mean\": 13245.1904296875, \"time\": \"2018-01-14\", \"type\": \"actual\"}, {\"ci_hi\": 11876.1845703125, \"ci_lo\": 11566.0791015625, \"mean\": 11736.208984375, \"time\": \"2018-01-14\", \"type\": \"expected\"}, {\"ci_hi\": 12022.66015625, \"ci_lo\": 12022.66015625, \"mean\": 12022.66015625, \"time\": \"2018-01-21\", \"type\": \"actual\"}, {\"ci_hi\": 11435.416015625, \"ci_lo\": 11133.251953125, \"mean\": 11288.98828125, \"time\": \"2018-01-21\", \"type\": \"expected\"}, {\"ci_hi\": 8846.9501953125, \"ci_lo\": 8846.9501953125, \"mean\": 8846.9501953125, \"time\": \"2018-01-28\", \"type\": \"actual\"}, {\"ci_hi\": 8918.0537109375, \"ci_lo\": 8491.9541015625, \"mean\": 8754.7626953125, \"time\": \"2018-01-28\", \"type\": \"expected\"}, {\"ci_hi\": 9797.0703125, \"ci_lo\": 9797.0703125, \"mean\": 9797.0703125, \"time\": \"2018-02-04\", \"type\": \"actual\"}, {\"ci_hi\": 9452.78515625, \"ci_lo\": 8891.42578125, \"mean\": 9139.9384765625, \"time\": \"2018-02-04\", \"type\": \"expected\"}, {\"ci_hi\": 13527.650390625, \"ci_lo\": 13527.650390625, \"mean\": 13527.650390625, \"time\": \"2018-02-11\", \"type\": \"actual\"}, {\"ci_hi\": 14739.2880859375, \"ci_lo\": 14472.025390625, \"mean\": 14627.818359375, \"time\": \"2018-02-11\", \"type\": \"expected\"}, {\"ci_hi\": 9635.4296875, \"ci_lo\": 9635.4296875, \"mean\": 9635.4296875, \"time\": \"2018-02-18\", \"type\": \"actual\"}, {\"ci_hi\": 9495.9775390625, \"ci_lo\": 8918.92578125, \"mean\": 9180.005859375, \"time\": \"2018-02-18\", \"type\": \"expected\"}, {\"ci_hi\": 15355.1103515625, \"ci_lo\": 15355.1103515625, \"mean\": 15355.1103515625, \"time\": \"2018-02-25\", \"type\": \"actual\"}, {\"ci_hi\": 15230.8759765625, \"ci_lo\": 14991.59765625, \"mean\": 15090.216796875, \"time\": \"2018-02-25\", \"type\": \"expected\"}, {\"ci_hi\": 12199.3701171875, \"ci_lo\": 12199.3701171875, \"mean\": 12199.3701171875, \"time\": \"2018-03-04\", \"type\": \"actual\"}, {\"ci_hi\": 10934.201171875, \"ci_lo\": 10618.5078125, \"mean\": 10765.779296875, \"time\": \"2018-03-04\", \"type\": \"expected\"}, {\"ci_hi\": 11368.23046875, \"ci_lo\": 11368.23046875, \"mean\": 11368.23046875, \"time\": \"2018-03-11\", \"type\": \"actual\"}, {\"ci_hi\": 11583.474609375, \"ci_lo\": 11279.4892578125, \"mean\": 11439.048828125, \"time\": \"2018-03-11\", \"type\": \"expected\"}, {\"ci_hi\": 8640.4404296875, \"ci_lo\": 8640.4404296875, \"mean\": 8640.4404296875, \"time\": \"2018-03-18\", \"type\": \"actual\"}, {\"ci_hi\": 9280.5693359375, \"ci_lo\": 8802.09765625, \"mean\": 9085.46484375, \"time\": \"2018-03-18\", \"type\": \"expected\"}, {\"ci_hi\": 4960.259765625, \"ci_lo\": 4960.259765625, \"mean\": 4960.259765625, \"time\": \"2018-03-25\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2018-03-25\", \"type\": \"expected\"}, {\"ci_hi\": 12726.4599609375, \"ci_lo\": 12726.4599609375, \"mean\": 12726.4599609375, \"time\": \"2018-04-01\", \"type\": \"actual\"}, {\"ci_hi\": 13779.6357421875, \"ci_lo\": 13205.0380859375, \"mean\": 13507.353515625, \"time\": \"2018-04-01\", \"type\": \"expected\"}, {\"ci_hi\": 11421.7099609375, \"ci_lo\": 11421.7099609375, \"mean\": 11421.7099609375, \"time\": \"2018-04-08\", \"type\": \"actual\"}, {\"ci_hi\": 10827.60546875, \"ci_lo\": 10371.76171875, \"mean\": 10592.279296875, \"time\": \"2018-04-08\", \"type\": \"expected\"}, {\"ci_hi\": 10875.3095703125, \"ci_lo\": 10875.3095703125, \"mean\": 10875.3095703125, \"time\": \"2018-04-15\", \"type\": \"actual\"}, {\"ci_hi\": 9203.6943359375, \"ci_lo\": 8723.1142578125, \"mean\": 8910.025390625, \"time\": \"2018-04-15\", \"type\": \"expected\"}, {\"ci_hi\": 13048.080078125, \"ci_lo\": 13048.080078125, \"mean\": 13048.080078125, \"time\": \"2018-04-22\", \"type\": \"actual\"}, {\"ci_hi\": 13203.849609375, \"ci_lo\": 12548.11328125, \"mean\": 12878.416015625, \"time\": \"2018-04-22\", \"type\": \"expected\"}, {\"ci_hi\": 10775.8603515625, \"ci_lo\": 10775.8603515625, \"mean\": 10775.8603515625, \"time\": \"2018-04-29\", \"type\": \"actual\"}, {\"ci_hi\": 9464.111328125, \"ci_lo\": 8898.6513671875, \"mean\": 9150.439453125, \"time\": \"2018-04-29\", \"type\": \"expected\"}, {\"ci_hi\": 15013.6201171875, \"ci_lo\": 15013.6201171875, \"mean\": 15013.6201171875, \"time\": \"2018-05-06\", \"type\": \"actual\"}, {\"ci_hi\": 15288.0498046875, \"ci_lo\": 15062.7353515625, \"mean\": 15170.9736328125, \"time\": \"2018-05-06\", \"type\": \"expected\"}, {\"ci_hi\": 14158.3203125, \"ci_lo\": 14158.3203125, \"mean\": 14158.3203125, \"time\": \"2018-05-13\", \"type\": \"actual\"}, {\"ci_hi\": 13204.283203125, \"ci_lo\": 12550.6689453125, \"mean\": 12881.046875, \"time\": \"2018-05-13\", \"type\": \"expected\"}, {\"ci_hi\": 15918.1396484375, \"ci_lo\": 15918.1396484375, \"mean\": 15918.1396484375, \"time\": \"2018-05-20\", \"type\": \"actual\"}, {\"ci_hi\": 14823.05078125, \"ci_lo\": 14560.0966796875, \"mean\": 14717.5966796875, \"time\": \"2018-05-20\", \"type\": \"expected\"}, {\"ci_hi\": 11128.75, \"ci_lo\": 11128.75, \"mean\": 11128.75, \"time\": \"2018-05-27\", \"type\": \"actual\"}, {\"ci_hi\": 9349.4501953125, \"ci_lo\": 8825.0205078125, \"mean\": 9044.328125, \"time\": \"2018-05-27\", \"type\": \"expected\"}, {\"ci_hi\": 12170.3603515625, \"ci_lo\": 12170.3603515625, \"mean\": 12170.3603515625, \"time\": \"2018-06-03\", \"type\": \"actual\"}, {\"ci_hi\": 13375.9228515625, \"ci_lo\": 12628.4794921875, \"mean\": 13010.150390625, \"time\": \"2018-06-03\", \"type\": \"expected\"}, {\"ci_hi\": 10134.7001953125, \"ci_lo\": 10134.7001953125, \"mean\": 10134.7001953125, \"time\": \"2018-06-10\", \"type\": \"actual\"}, {\"ci_hi\": 9076.31640625, \"ci_lo\": 8611.91015625, \"mean\": 8793.134765625, \"time\": \"2018-06-10\", \"type\": \"expected\"}, {\"ci_hi\": 11093.5498046875, \"ci_lo\": 11093.5498046875, \"mean\": 11093.5498046875, \"time\": \"2018-06-17\", \"type\": \"actual\"}, {\"ci_hi\": 12615.4765625, \"ci_lo\": 12107.1708984375, \"mean\": 12377.4970703125, \"time\": \"2018-06-17\", \"type\": \"expected\"}, {\"ci_hi\": 8170.6298828125, \"ci_lo\": 8170.6298828125, \"mean\": 8170.6298828125, \"time\": \"2018-06-24\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2018-06-24\", \"type\": \"expected\"}, {\"ci_hi\": 6542.7099609375, \"ci_lo\": 6542.7099609375, \"mean\": 6542.7099609375, \"time\": \"2018-07-01\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2018-07-01\", \"type\": \"expected\"}, {\"ci_hi\": 11325.7998046875, \"ci_lo\": 11325.7998046875, \"mean\": 11325.7998046875, \"time\": \"2018-07-08\", \"type\": \"actual\"}, {\"ci_hi\": 11750.0634765625, \"ci_lo\": 11448.7314453125, \"mean\": 11616.052734375, \"time\": \"2018-07-08\", \"type\": \"expected\"}, {\"ci_hi\": 7793.240234375, \"ci_lo\": 7793.240234375, \"mean\": 7793.240234375, \"time\": \"2018-07-15\", \"type\": \"actual\"}, {\"ci_hi\": 9405.6220703125, \"ci_lo\": 8861.2275390625, \"mean\": 9096.2578125, \"time\": \"2018-07-15\", \"type\": \"expected\"}, {\"ci_hi\": 15010.9404296875, \"ci_lo\": 15010.9404296875, \"mean\": 15010.9404296875, \"time\": \"2018-07-22\", \"type\": \"actual\"}, {\"ci_hi\": 16177.2841796875, \"ci_lo\": 15672.068359375, \"mean\": 15952.5966796875, \"time\": \"2018-07-22\", \"type\": \"expected\"}, {\"ci_hi\": 10634.3095703125, \"ci_lo\": 10634.3095703125, \"mean\": 10634.3095703125, \"time\": \"2018-07-29\", \"type\": \"actual\"}, {\"ci_hi\": 8862.7822265625, \"ci_lo\": 8445.1435546875, \"mean\": 8704.302734375, \"time\": \"2018-07-29\", \"type\": \"expected\"}, {\"ci_hi\": 11751.3896484375, \"ci_lo\": 11751.3896484375, \"mean\": 11751.3896484375, \"time\": \"2018-08-05\", \"type\": \"actual\"}, {\"ci_hi\": 11494.8046875, \"ci_lo\": 11197.51953125, \"mean\": 11366.6005859375, \"time\": \"2018-08-05\", \"type\": \"expected\"}, {\"ci_hi\": 9151.2001953125, \"ci_lo\": 9151.2001953125, \"mean\": 9151.2001953125, \"time\": \"2018-08-12\", \"type\": \"actual\"}, {\"ci_hi\": 9718.236328125, \"ci_lo\": 9172.830078125, \"mean\": 9473.3662109375, \"time\": \"2018-08-12\", \"type\": \"expected\"}, {\"ci_hi\": 9141.4599609375, \"ci_lo\": 9141.4599609375, \"mean\": 9141.4599609375, \"time\": \"2018-08-19\", \"type\": \"actual\"}, {\"ci_hi\": 9648.333984375, \"ci_lo\": 9014.7939453125, \"mean\": 9321.8603515625, \"time\": \"2018-08-19\", \"type\": \"expected\"}, {\"ci_hi\": 7399.919921875, \"ci_lo\": 7399.919921875, \"mean\": 7399.919921875, \"time\": \"2018-08-26\", \"type\": \"actual\"}, {\"ci_hi\": 9569.8515625, \"ci_lo\": 9046.43359375, \"mean\": 9342.205078125, \"time\": \"2018-08-26\", \"type\": \"expected\"}, {\"ci_hi\": 10893.16015625, \"ci_lo\": 10893.16015625, \"mean\": 10893.16015625, \"time\": \"2018-09-02\", \"type\": \"actual\"}, {\"ci_hi\": 12288.8642578125, \"ci_lo\": 11832.83984375, \"mean\": 12063.73046875, \"time\": \"2018-09-02\", \"type\": \"expected\"}, {\"ci_hi\": 11550.4697265625, \"ci_lo\": 11550.4697265625, \"mean\": 11550.4697265625, \"time\": \"2018-09-09\", \"type\": \"actual\"}, {\"ci_hi\": 11126.0927734375, \"ci_lo\": 10832.921875, \"mean\": 10990.509765625, \"time\": \"2018-09-09\", \"type\": \"expected\"}, {\"ci_hi\": 8672.08984375, \"ci_lo\": 8672.08984375, \"mean\": 8672.08984375, \"time\": \"2018-09-16\", \"type\": \"actual\"}, {\"ci_hi\": 9308.12890625, \"ci_lo\": 8798.21484375, \"mean\": 9006.19140625, \"time\": \"2018-09-16\", \"type\": \"expected\"}, {\"ci_hi\": 9427.2197265625, \"ci_lo\": 9427.2197265625, \"mean\": 9427.2197265625, \"time\": \"2018-09-23\", \"type\": \"actual\"}, {\"ci_hi\": 10954.4326171875, \"ci_lo\": 10652.1171875, \"mean\": 10799.669921875, \"time\": \"2018-09-23\", \"type\": \"expected\"}, {\"ci_hi\": 8036.91015625, \"ci_lo\": 8036.91015625, \"mean\": 8036.91015625, \"time\": \"2018-09-30\", \"type\": \"actual\"}, {\"ci_hi\": 9145.0830078125, \"ci_lo\": 8671.8740234375, \"mean\": 8856.1875, \"time\": \"2018-09-30\", \"type\": \"expected\"}, {\"ci_hi\": 11240.580078125, \"ci_lo\": 11240.580078125, \"mean\": 11240.580078125, \"time\": \"2018-10-07\", \"type\": \"actual\"}, {\"ci_hi\": 12778.6455078125, \"ci_lo\": 12310.4697265625, \"mean\": 12522.154296875, \"time\": \"2018-10-07\", \"type\": \"expected\"}, {\"ci_hi\": 12386.830078125, \"ci_lo\": 12386.830078125, \"mean\": 12386.830078125, \"time\": \"2018-10-14\", \"type\": \"actual\"}, {\"ci_hi\": 12825.845703125, \"ci_lo\": 12318.88671875, \"mean\": 12552.396484375, \"time\": \"2018-10-14\", \"type\": \"expected\"}, {\"ci_hi\": 12513.83984375, \"ci_lo\": 12513.83984375, \"mean\": 12513.83984375, \"time\": \"2018-10-21\", \"type\": \"actual\"}, {\"ci_hi\": 12374.7734375, \"ci_lo\": 11984.9375, \"mean\": 12125.2802734375, \"time\": \"2018-10-21\", \"type\": \"expected\"}, {\"ci_hi\": 12235.080078125, \"ci_lo\": 12235.080078125, \"mean\": 12235.080078125, \"time\": \"2018-10-28\", \"type\": \"actual\"}, {\"ci_hi\": 12712.40625, \"ci_lo\": 11989.9326171875, \"mean\": 12356.458984375, \"time\": \"2018-10-28\", \"type\": \"expected\"}, {\"ci_hi\": 11895.7802734375, \"ci_lo\": 11895.7802734375, \"mean\": 11895.7802734375, \"time\": \"2018-11-04\", \"type\": \"actual\"}, {\"ci_hi\": 11648.4384765625, \"ci_lo\": 10743.0634765625, \"mean\": 11229.4150390625, \"time\": \"2018-11-04\", \"type\": \"expected\"}, {\"ci_hi\": 10047.41015625, \"ci_lo\": 10047.41015625, \"mean\": 10047.41015625, \"time\": \"2018-11-11\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2018-11-11\", \"type\": \"expected\"}, {\"ci_hi\": 9705.3896484375, \"ci_lo\": 9705.3896484375, \"mean\": 9705.3896484375, \"time\": \"2018-11-18\", \"type\": \"actual\"}, {\"ci_hi\": 9423.71484375, \"ci_lo\": 8872.833984375, \"mean\": 9113.005859375, \"time\": \"2018-11-18\", \"type\": \"expected\"}, {\"ci_hi\": 8847.1904296875, \"ci_lo\": 8847.1904296875, \"mean\": 8847.1904296875, \"time\": \"2018-11-25\", \"type\": \"actual\"}, {\"ci_hi\": 9346.642578125, \"ci_lo\": 8857.6162109375, \"mean\": 9144.181640625, \"time\": \"2018-11-25\", \"type\": \"expected\"}, {\"ci_hi\": 10379.0703125, \"ci_lo\": 10379.0703125, \"mean\": 10379.0703125, \"time\": \"2018-12-02\", \"type\": \"actual\"}, {\"ci_hi\": 11446.6259765625, \"ci_lo\": 11143.2939453125, \"mean\": 11298.810546875, \"time\": \"2018-12-02\", \"type\": \"expected\"}, {\"ci_hi\": 11312.48046875, \"ci_lo\": 11312.48046875, \"mean\": 11312.48046875, \"time\": \"2018-12-09\", \"type\": \"actual\"}, {\"ci_hi\": 11966.5244140625, \"ci_lo\": 11654.32421875, \"mean\": 11832.3330078125, \"time\": \"2018-12-09\", \"type\": \"expected\"}, {\"ci_hi\": 8226.23046875, \"ci_lo\": 8226.23046875, \"mean\": 8226.23046875, \"time\": \"2018-12-16\", \"type\": \"actual\"}, {\"ci_hi\": 9066.419921875, \"ci_lo\": 8603.2939453125, \"mean\": 8784.0703125, \"time\": \"2018-12-16\", \"type\": \"expected\"}, {\"ci_hi\": 13966.1103515625, \"ci_lo\": 13966.1103515625, \"mean\": 13966.1103515625, \"time\": \"2018-12-23\", \"type\": \"actual\"}, {\"ci_hi\": 15469.39453125, \"ci_lo\": 15133.537109375, \"mean\": 15330.458984375, \"time\": \"2018-12-23\", \"type\": \"expected\"}, {\"ci_hi\": 13460.3203125, \"ci_lo\": 13460.3203125, \"mean\": 13460.3203125, \"time\": \"2018-12-30\", \"type\": \"actual\"}, {\"ci_hi\": 12095.34765625, \"ci_lo\": 11769.056640625, \"mean\": 11942.447265625, \"time\": \"2018-12-30\", \"type\": \"expected\"}, {\"ci_hi\": 15742.6103515625, \"ci_lo\": 15742.6103515625, \"mean\": 15742.6103515625, \"time\": \"2019-01-06\", \"type\": \"actual\"}, {\"ci_hi\": 15005.787109375, \"ci_lo\": 14766.8876953125, \"mean\": 14879.072265625, \"time\": \"2019-01-06\", \"type\": \"expected\"}, {\"ci_hi\": 10440.98046875, \"ci_lo\": 10440.98046875, \"mean\": 10440.98046875, \"time\": \"2019-01-13\", \"type\": \"actual\"}, {\"ci_hi\": 9437.3935546875, \"ci_lo\": 8881.5908203125, \"mean\": 9125.67578125, \"time\": \"2019-01-13\", \"type\": \"expected\"}, {\"ci_hi\": 8535.490234375, \"ci_lo\": 8535.490234375, \"mean\": 8535.490234375, \"time\": \"2019-01-20\", \"type\": \"actual\"}, {\"ci_hi\": 9416.994140625, \"ci_lo\": 8868.525390625, \"mean\": 9106.783203125, \"time\": \"2019-01-20\", \"type\": \"expected\"}, {\"ci_hi\": 7801.580078125, \"ci_lo\": 7801.580078125, \"mean\": 7801.580078125, \"time\": \"2019-01-27\", \"type\": \"actual\"}, {\"ci_hi\": 9218.361328125, \"ci_lo\": 8735.955078125, \"mean\": 8923.5126953125, \"time\": \"2019-01-27\", \"type\": \"expected\"}, {\"ci_hi\": 9570.009765625, \"ci_lo\": 9570.009765625, \"mean\": 9570.009765625, \"time\": \"2019-02-03\", \"type\": \"actual\"}, {\"ci_hi\": 11079.427734375, \"ci_lo\": 10748.7568359375, \"mean\": 10897.2158203125, \"time\": \"2019-02-03\", \"type\": \"expected\"}, {\"ci_hi\": 7854.77978515625, \"ci_lo\": 7854.77978515625, \"mean\": 7854.77978515625, \"time\": \"2019-02-10\", \"type\": \"actual\"}, {\"ci_hi\": 9082.064453125, \"ci_lo\": 8616.916015625, \"mean\": 8798.400390625, \"time\": \"2019-02-10\", \"type\": \"expected\"}, {\"ci_hi\": 8067.5498046875, \"ci_lo\": 8067.5498046875, \"mean\": 8067.5498046875, \"time\": \"2019-02-17\", \"type\": \"actual\"}, {\"ci_hi\": 9257.0556640625, \"ci_lo\": 8764.875, \"mean\": 8959.123046875, \"time\": \"2019-02-17\", \"type\": \"expected\"}, {\"ci_hi\": 7848.259765625, \"ci_lo\": 7848.259765625, \"mean\": 7848.259765625, \"time\": \"2019-02-24\", \"type\": \"actual\"}, {\"ci_hi\": 9360.98828125, \"ci_lo\": 8832.478515625, \"mean\": 9054.986328125, \"time\": \"2019-02-24\", \"type\": \"expected\"}, {\"ci_hi\": 14012.7099609375, \"ci_lo\": 14012.7099609375, \"mean\": 14012.7099609375, \"time\": \"2019-03-03\", \"type\": \"actual\"}, {\"ci_hi\": 15151.8134765625, \"ci_lo\": 14897.3818359375, \"mean\": 15030.078125, \"time\": \"2019-03-03\", \"type\": \"expected\"}, {\"ci_hi\": 16127.4501953125, \"ci_lo\": 16127.4501953125, \"mean\": 16127.4501953125, \"time\": \"2019-03-10\", \"type\": \"actual\"}, {\"ci_hi\": 15018.9765625, \"ci_lo\": 14792.4072265625, \"mean\": 14882.4326171875, \"time\": \"2019-03-10\", \"type\": \"expected\"}, {\"ci_hi\": 11636.9697265625, \"ci_lo\": 11636.9697265625, \"mean\": 11636.9697265625, \"time\": \"2019-03-17\", \"type\": \"actual\"}, {\"ci_hi\": 9423.7080078125, \"ci_lo\": 8872.8291015625, \"mean\": 9113.0, \"time\": \"2019-03-17\", \"type\": \"expected\"}, {\"ci_hi\": 8193.650390625, \"ci_lo\": 8193.650390625, \"mean\": 8193.650390625, \"time\": \"2019-03-24\", \"type\": \"actual\"}, {\"ci_hi\": 9156.935546875, \"ci_lo\": 8682.2265625, \"mean\": 8867.068359375, \"time\": \"2019-03-24\", \"type\": \"expected\"}, {\"ci_hi\": 9451.6103515625, \"ci_lo\": 9451.6103515625, \"mean\": 9451.6103515625, \"time\": \"2019-03-31\", \"type\": \"actual\"}, {\"ci_hi\": 9340.650390625, \"ci_lo\": 8852.57421875, \"mean\": 9138.857421875, \"time\": \"2019-03-31\", \"type\": \"expected\"}, {\"ci_hi\": 11454.01953125, \"ci_lo\": 11454.01953125, \"mean\": 11454.01953125, \"time\": \"2019-04-07\", \"type\": \"actual\"}, {\"ci_hi\": 11558.357421875, \"ci_lo\": 11263.5576171875, \"mean\": 11429.7978515625, \"time\": \"2019-04-07\", \"type\": \"expected\"}, {\"ci_hi\": 5526.83984375, \"ci_lo\": 5526.83984375, \"mean\": 5526.83984375, \"time\": \"2019-04-14\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2019-04-14\", \"type\": \"expected\"}, {\"ci_hi\": 7677.52001953125, \"ci_lo\": 7677.52001953125, \"mean\": 7677.52001953125, \"time\": \"2019-04-21\", \"type\": \"actual\"}, {\"ci_hi\": 9292.1279296875, \"ci_lo\": 8787.7939453125, \"mean\": 8991.435546875, \"time\": \"2019-04-21\", \"type\": \"expected\"}, {\"ci_hi\": 8084.97998046875, \"ci_lo\": 8084.97998046875, \"mean\": 8084.97998046875, \"time\": \"2019-04-28\", \"type\": \"actual\"}, {\"ci_hi\": 9249.916015625, \"ci_lo\": 8760.150390625, \"mean\": 8952.548828125, \"time\": \"2019-04-28\", \"type\": \"expected\"}, {\"ci_hi\": 7456.56005859375, \"ci_lo\": 7456.56005859375, \"mean\": 7456.56005859375, \"time\": \"2019-05-05\", \"type\": \"actual\"}, {\"ci_hi\": 9326.2685546875, \"ci_lo\": 8810.0, \"mean\": 9022.92578125, \"time\": \"2019-05-05\", \"type\": \"expected\"}, {\"ci_hi\": 5365.18017578125, \"ci_lo\": 5365.18017578125, \"mean\": 5365.18017578125, \"time\": \"2019-05-12\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2019-05-12\", \"type\": \"expected\"}, {\"ci_hi\": 8134.16015625, \"ci_lo\": 8134.16015625, \"mean\": 8134.16015625, \"time\": \"2019-05-19\", \"type\": \"actual\"}, {\"ci_hi\": 9350.6962890625, \"ci_lo\": 8825.826171875, \"mean\": 9045.4794921875, \"time\": \"2019-05-19\", \"type\": \"expected\"}, {\"ci_hi\": 10065.5302734375, \"ci_lo\": 10065.5302734375, \"mean\": 10065.5302734375, \"time\": \"2019-05-26\", \"type\": \"actual\"}, {\"ci_hi\": 11834.9208984375, \"ci_lo\": 11510.5224609375, \"mean\": 11701.9931640625, \"time\": \"2019-05-26\", \"type\": \"expected\"}, {\"ci_hi\": 10878.9404296875, \"ci_lo\": 10878.9404296875, \"mean\": 10878.9404296875, \"time\": \"2019-06-02\", \"type\": \"actual\"}, {\"ci_hi\": 12215.380859375, \"ci_lo\": 11865.458984375, \"mean\": 11984.4033203125, \"time\": \"2019-06-02\", \"type\": \"expected\"}, {\"ci_hi\": 11524.6298828125, \"ci_lo\": 11524.6298828125, \"mean\": 11524.6298828125, \"time\": \"2019-06-09\", \"type\": \"actual\"}, {\"ci_hi\": 10942.216796875, \"ci_lo\": 10603.359375, \"mean\": 10749.9033203125, \"time\": \"2019-06-09\", \"type\": \"expected\"}, {\"ci_hi\": 6563.85009765625, \"ci_lo\": 6563.85009765625, \"mean\": 6563.85009765625, \"time\": \"2019-06-16\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2019-06-16\", \"type\": \"expected\"}, {\"ci_hi\": 14165.5703125, \"ci_lo\": 14165.5703125, \"mean\": 14165.5703125, \"time\": \"2019-06-23\", \"type\": \"actual\"}, {\"ci_hi\": 14787.9033203125, \"ci_lo\": 14450.3779296875, \"mean\": 14628.2158203125, \"time\": \"2019-06-23\", \"type\": \"expected\"}, {\"ci_hi\": 15624.5595703125, \"ci_lo\": 15624.5595703125, \"mean\": 15624.5595703125, \"time\": \"2019-06-30\", \"type\": \"actual\"}, {\"ci_hi\": 15164.607421875, \"ci_lo\": 14914.1591796875, \"mean\": 15053.330078125, \"time\": \"2019-06-30\", \"type\": \"expected\"}, {\"ci_hi\": 11305.0400390625, \"ci_lo\": 11305.0400390625, \"mean\": 11305.0400390625, \"time\": \"2019-07-07\", \"type\": \"actual\"}, {\"ci_hi\": 9524.8076171875, \"ci_lo\": 8937.2001953125, \"mean\": 9206.7841796875, \"time\": \"2019-07-07\", \"type\": \"expected\"}, {\"ci_hi\": 8245.5703125, \"ci_lo\": 8245.5703125, \"mean\": 8245.5703125, \"time\": \"2019-07-14\", \"type\": \"actual\"}, {\"ci_hi\": 9396.5634765625, \"ci_lo\": 8855.40625, \"mean\": 9087.876953125, \"time\": \"2019-07-14\", \"type\": \"expected\"}, {\"ci_hi\": 7676.64013671875, \"ci_lo\": 7676.64013671875, \"mean\": 7676.64013671875, \"time\": \"2019-07-21\", \"type\": \"actual\"}, {\"ci_hi\": 9409.001953125, \"ci_lo\": 8863.396484375, \"mean\": 9099.38671875, \"time\": \"2019-07-21\", \"type\": \"expected\"}, {\"ci_hi\": 5023.52978515625, \"ci_lo\": 5023.52978515625, \"mean\": 5023.52978515625, \"time\": \"2019-07-28\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2019-07-28\", \"type\": \"expected\"}, {\"ci_hi\": 8058.85009765625, \"ci_lo\": 8058.85009765625, \"mean\": 8058.85009765625, \"time\": \"2019-08-04\", \"type\": \"actual\"}, {\"ci_hi\": 9390.4365234375, \"ci_lo\": 8851.46484375, \"mean\": 9082.2099609375, \"time\": \"2019-08-04\", \"type\": \"expected\"}, {\"ci_hi\": 9902.4404296875, \"ci_lo\": 9902.4404296875, \"mean\": 9902.4404296875, \"time\": \"2019-08-11\", \"type\": \"actual\"}, {\"ci_hi\": 11218.169921875, \"ci_lo\": 10898.2646484375, \"mean\": 11047.34375, \"time\": \"2019-08-11\", \"type\": \"expected\"}, {\"ci_hi\": 8058.0498046875, \"ci_lo\": 8058.0498046875, \"mean\": 8058.0498046875, \"time\": \"2019-08-18\", \"type\": \"actual\"}, {\"ci_hi\": 9397.6298828125, \"ci_lo\": 8856.091796875, \"mean\": 9088.8642578125, \"time\": \"2019-08-18\", \"type\": \"expected\"}, {\"ci_hi\": 7498.35986328125, \"ci_lo\": 7498.35986328125, \"mean\": 7498.35986328125, \"time\": \"2019-08-25\", \"type\": \"actual\"}, {\"ci_hi\": 9382.9208984375, \"ci_lo\": 8846.6259765625, \"mean\": 9075.259765625, \"time\": \"2019-08-25\", \"type\": \"expected\"}, {\"ci_hi\": 12216.7998046875, \"ci_lo\": 12216.7998046875, \"mean\": 12216.7998046875, \"time\": \"2019-09-01\", \"type\": \"actual\"}, {\"ci_hi\": 13414.2822265625, \"ci_lo\": 12797.958984375, \"mean\": 13150.2373046875, \"time\": \"2019-09-01\", \"type\": \"expected\"}, {\"ci_hi\": 11042.7998046875, \"ci_lo\": 11042.7998046875, \"mean\": 11042.7998046875, \"time\": \"2019-09-08\", \"type\": \"actual\"}, {\"ci_hi\": 9547.13671875, \"ci_lo\": 9027.12890625, \"mean\": 9322.0751953125, \"time\": \"2019-09-08\", \"type\": \"expected\"}, {\"ci_hi\": 10713.919921875, \"ci_lo\": 10713.919921875, \"mean\": 10713.919921875, \"time\": \"2019-09-15\", \"type\": \"actual\"}, {\"ci_hi\": 9700.9384765625, \"ci_lo\": 9158.240234375, \"mean\": 9458.2822265625, \"time\": \"2019-09-15\", \"type\": \"expected\"}, {\"ci_hi\": 9130.0595703125, \"ci_lo\": 9130.0595703125, \"mean\": 9130.0595703125, \"time\": \"2019-09-22\", \"type\": \"actual\"}, {\"ci_hi\": 9315.98046875, \"ci_lo\": 8803.3193359375, \"mean\": 9013.435546875, \"time\": \"2019-09-22\", \"type\": \"expected\"}, {\"ci_hi\": 7325.81982421875, \"ci_lo\": 7325.81982421875, \"mean\": 7325.81982421875, \"time\": \"2019-09-29\", \"type\": \"actual\"}, {\"ci_hi\": 9694.7841796875, \"ci_lo\": 9152.974609375, \"mean\": 9452.8349609375, \"time\": \"2019-09-29\", \"type\": \"expected\"}, {\"ci_hi\": 15292.3603515625, \"ci_lo\": 15292.3603515625, \"mean\": 15292.3603515625, \"time\": \"2019-10-06\", \"type\": \"actual\"}, {\"ci_hi\": 16168.5185546875, \"ci_lo\": 15636.1572265625, \"mean\": 15927.7626953125, \"time\": \"2019-10-06\", \"type\": \"expected\"}, {\"ci_hi\": 11571.919921875, \"ci_lo\": 11571.919921875, \"mean\": 11571.919921875, \"time\": \"2019-10-13\", \"type\": \"actual\"}, {\"ci_hi\": 9195.08203125, \"ci_lo\": 8715.5771484375, \"mean\": 8902.1083984375, \"time\": \"2019-10-13\", \"type\": \"expected\"}, {\"ci_hi\": 10464.2998046875, \"ci_lo\": 10464.2998046875, \"mean\": 10464.2998046875, \"time\": \"2019-10-20\", \"type\": \"actual\"}, {\"ci_hi\": 11135.2001953125, \"ci_lo\": 10846.08984375, \"mean\": 10998.1328125, \"time\": \"2019-10-20\", \"type\": \"expected\"}, {\"ci_hi\": 9229.3095703125, \"ci_lo\": 9229.3095703125, \"mean\": 9229.3095703125, \"time\": \"2019-10-27\", \"type\": \"actual\"}, {\"ci_hi\": 9333.89453125, \"ci_lo\": 8814.9462890625, \"mean\": 9029.96484375, \"time\": \"2019-10-27\", \"type\": \"expected\"}, {\"ci_hi\": 9964.759765625, \"ci_lo\": 9964.759765625, \"mean\": 9964.759765625, \"time\": \"2019-11-03\", \"type\": \"actual\"}, {\"ci_hi\": 11544.9638671875, \"ci_lo\": 11222.962890625, \"mean\": 11403.97265625, \"time\": \"2019-11-03\", \"type\": \"expected\"}, {\"ci_hi\": 8018.56005859375, \"ci_lo\": 8018.56005859375, \"mean\": 8018.56005859375, \"time\": \"2019-11-10\", \"type\": \"actual\"}, {\"ci_hi\": 9261.033203125, \"ci_lo\": 8767.478515625, \"mean\": 8962.7841796875, \"time\": \"2019-11-10\", \"type\": \"expected\"}, {\"ci_hi\": 7278.85009765625, \"ci_lo\": 7278.85009765625, \"mean\": 7278.85009765625, \"time\": \"2019-11-17\", \"type\": \"actual\"}, {\"ci_hi\": 9199.5634765625, \"ci_lo\": 8719.498046875, \"mean\": 8906.228515625, \"time\": \"2019-11-17\", \"type\": \"expected\"}, {\"ci_hi\": 8467.4404296875, \"ci_lo\": 8467.4404296875, \"mean\": 8467.4404296875, \"time\": \"2019-11-24\", \"type\": \"actual\"}, {\"ci_hi\": 9514.8115234375, \"ci_lo\": 8930.8720703125, \"mean\": 9197.498046875, \"time\": \"2019-11-24\", \"type\": \"expected\"}, {\"ci_hi\": 7620.080078125, \"ci_lo\": 7620.080078125, \"mean\": 7620.080078125, \"time\": \"2019-12-01\", \"type\": \"actual\"}, {\"ci_hi\": 9432.6015625, \"ci_lo\": 8878.5244140625, \"mean\": 9121.236328125, \"time\": \"2019-12-01\", \"type\": \"expected\"}, {\"ci_hi\": 7353.990234375, \"ci_lo\": 7353.990234375, \"mean\": 7353.990234375, \"time\": \"2019-12-08\", \"type\": \"actual\"}, {\"ci_hi\": 9172.3359375, \"ci_lo\": 8709.197265625, \"mean\": 8986.771484375, \"time\": \"2019-12-08\", \"type\": \"expected\"}, {\"ci_hi\": 12947.48046875, \"ci_lo\": 12947.48046875, \"mean\": 12947.48046875, \"time\": \"2019-12-15\", \"type\": \"actual\"}, {\"ci_hi\": 14739.498046875, \"ci_lo\": 14361.2080078125, \"mean\": 14572.96875, \"time\": \"2019-12-15\", \"type\": \"expected\"}, {\"ci_hi\": 10250.7802734375, \"ci_lo\": 10250.7802734375, \"mean\": 10250.7802734375, \"time\": \"2019-12-22\", \"type\": \"actual\"}, {\"ci_hi\": 9453.376953125, \"ci_lo\": 8891.8037109375, \"mean\": 9140.4873046875, \"time\": \"2019-12-22\", \"type\": \"expected\"}, {\"ci_hi\": 13096.5703125, \"ci_lo\": 13096.5703125, \"mean\": 13096.5703125, \"time\": \"2019-12-29\", \"type\": \"actual\"}, {\"ci_hi\": 13636.9267578125, \"ci_lo\": 12767.515625, \"mean\": 13228.3828125, \"time\": \"2019-12-29\", \"type\": \"expected\"}, {\"ci_hi\": 10843.2998046875, \"ci_lo\": 10843.2998046875, \"mean\": 10843.2998046875, \"time\": \"2020-01-05\", \"type\": \"actual\"}, {\"ci_hi\": 9393.3583984375, \"ci_lo\": 8853.3447265625, \"mean\": 9084.912109375, \"time\": \"2020-01-05\", \"type\": \"expected\"}, {\"ci_hi\": 9702.3203125, \"ci_lo\": 9702.3203125, \"mean\": 9702.3203125, \"time\": \"2020-01-12\", \"type\": \"actual\"}, {\"ci_hi\": 9319.4287109375, \"ci_lo\": 8805.5595703125, \"mean\": 9016.615234375, \"time\": \"2020-01-12\", \"type\": \"expected\"}, {\"ci_hi\": 11509.7197265625, \"ci_lo\": 11509.7197265625, \"mean\": 11509.7197265625, \"time\": \"2020-01-19\", \"type\": \"actual\"}, {\"ci_hi\": 12638.447265625, \"ci_lo\": 12203.673828125, \"mean\": 12391.861328125, \"time\": \"2020-01-19\", \"type\": \"expected\"}, {\"ci_hi\": 10862.91015625, \"ci_lo\": 10862.91015625, \"mean\": 10862.91015625, \"time\": \"2020-01-26\", \"type\": \"actual\"}, {\"ci_hi\": 10034.228515625, \"ci_lo\": 9435.935546875, \"mean\": 9742.962890625, \"time\": \"2020-01-26\", \"type\": \"expected\"}, {\"ci_hi\": 14894.2998046875, \"ci_lo\": 14894.2998046875, \"mean\": 14894.2998046875, \"time\": \"2020-02-02\", \"type\": \"actual\"}, {\"ci_hi\": 13939.3046875, \"ci_lo\": 12856.78125, \"mean\": 13413.9873046875, \"time\": \"2020-02-02\", \"type\": \"expected\"}, {\"ci_hi\": 12071.16015625, \"ci_lo\": 12071.16015625, \"mean\": 12071.16015625, \"time\": \"2020-02-09\", \"type\": \"actual\"}, {\"ci_hi\": 11006.7724609375, \"ci_lo\": 10648.705078125, \"mean\": 10795.298828125, \"time\": \"2020-02-09\", \"type\": \"expected\"}, {\"ci_hi\": 16592.25, \"ci_lo\": 16592.25, \"mean\": 16592.25, \"time\": \"2020-02-16\", \"type\": \"actual\"}, {\"ci_hi\": 16432.4765625, \"ci_lo\": 15765.265625, \"mean\": 16133.013671875, \"time\": \"2020-02-16\", \"type\": \"expected\"}, {\"ci_hi\": 12441.240234375, \"ci_lo\": 12441.240234375, \"mean\": 12441.240234375, \"time\": \"2020-02-23\", \"type\": \"actual\"}, {\"ci_hi\": 9225.9111328125, \"ci_lo\": 8742.5693359375, \"mean\": 8930.4560546875, \"time\": \"2020-02-23\", \"type\": \"expected\"}, {\"ci_hi\": 12279.7998046875, \"ci_lo\": 12279.7998046875, \"mean\": 12279.7998046875, \"time\": \"2020-03-01\", \"type\": \"actual\"}, {\"ci_hi\": 11541.1005859375, \"ci_lo\": 11239.990234375, \"mean\": 11399.609375, \"time\": \"2020-03-01\", \"type\": \"expected\"}, {\"ci_hi\": 6790.080078125, \"ci_lo\": 6790.080078125, \"mean\": 6790.080078125, \"time\": \"2020-03-08\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-03-08\", \"type\": \"expected\"}, {\"ci_hi\": 11909.2197265625, \"ci_lo\": 11909.2197265625, \"mean\": 11909.2197265625, \"time\": \"2020-03-15\", \"type\": \"actual\"}, {\"ci_hi\": 13018.8798828125, \"ci_lo\": 12510.4130859375, \"mean\": 12773.5791015625, \"time\": \"2020-03-15\", \"type\": \"expected\"}, {\"ci_hi\": 13496.330078125, \"ci_lo\": 13496.330078125, \"mean\": 13496.330078125, \"time\": \"2020-03-22\", \"type\": \"actual\"}, {\"ci_hi\": 11910.5654296875, \"ci_lo\": 11592.4453125, \"mean\": 11758.9013671875, \"time\": \"2020-03-22\", \"type\": \"expected\"}, {\"ci_hi\": 12297.330078125, \"ci_lo\": 12297.330078125, \"mean\": 12297.330078125, \"time\": \"2020-03-29\", \"type\": \"actual\"}, {\"ci_hi\": 11357.435546875, \"ci_lo\": 11060.287109375, \"mean\": 11226.189453125, \"time\": \"2020-03-29\", \"type\": \"expected\"}, {\"ci_hi\": 6378.02001953125, \"ci_lo\": 6378.02001953125, \"mean\": 6378.02001953125, \"time\": \"2020-04-05\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-04-05\", \"type\": \"expected\"}, {\"ci_hi\": 14447.2197265625, \"ci_lo\": 14447.2197265625, \"mean\": 14447.2197265625, \"time\": \"2020-04-12\", \"type\": \"actual\"}, {\"ci_hi\": 15420.2138671875, \"ci_lo\": 15032.98828125, \"mean\": 15217.5, \"time\": \"2020-04-12\", \"type\": \"expected\"}, {\"ci_hi\": 14199.6298828125, \"ci_lo\": 14199.6298828125, \"mean\": 14199.6298828125, \"time\": \"2020-04-19\", \"type\": \"actual\"}, {\"ci_hi\": 13561.4716796875, \"ci_lo\": 12722.63671875, \"mean\": 13160.4033203125, \"time\": \"2020-04-19\", \"type\": \"expected\"}, {\"ci_hi\": 8818.599609375, \"ci_lo\": 8818.599609375, \"mean\": 8818.599609375, \"time\": \"2020-04-26\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-04-26\", \"type\": \"expected\"}, {\"ci_hi\": 11735.099609375, \"ci_lo\": 11735.099609375, \"mean\": 11735.099609375, \"time\": \"2020-05-03\", \"type\": \"actual\"}, {\"ci_hi\": 11621.1962890625, \"ci_lo\": 11311.56640625, \"mean\": 11489.1435546875, \"time\": \"2020-05-03\", \"type\": \"expected\"}, {\"ci_hi\": 10804.4599609375, \"ci_lo\": 10804.4599609375, \"mean\": 10804.4599609375, \"time\": \"2020-05-10\", \"type\": \"actual\"}, {\"ci_hi\": 10915.5419921875, \"ci_lo\": 10414.767578125, \"mean\": 10662.21875, \"time\": \"2020-05-10\", \"type\": \"expected\"}, {\"ci_hi\": 10008.83984375, \"ci_lo\": 10008.83984375, \"mean\": 10008.83984375, \"time\": \"2020-05-17\", \"type\": \"actual\"}, {\"ci_hi\": 9369.5810546875, \"ci_lo\": 8838.0263671875, \"mean\": 9062.927734375, \"time\": \"2020-05-17\", \"type\": \"expected\"}, {\"ci_hi\": 13038.9404296875, \"ci_lo\": 13038.9404296875, \"mean\": 13038.9404296875, \"time\": \"2020-05-24\", \"type\": \"actual\"}, {\"ci_hi\": 12812.669921875, \"ci_lo\": 12339.8359375, \"mean\": 12547.9130859375, \"time\": \"2020-05-24\", \"type\": \"expected\"}, {\"ci_hi\": 12997.5703125, \"ci_lo\": 12997.5703125, \"mean\": 12997.5703125, \"time\": \"2020-05-31\", \"type\": \"actual\"}, {\"ci_hi\": 11733.40234375, \"ci_lo\": 11374.203125, \"mean\": 11547.7744140625, \"time\": \"2020-05-31\", \"type\": \"expected\"}, {\"ci_hi\": 13131.6796875, \"ci_lo\": 13131.6796875, \"mean\": 13131.6796875, \"time\": \"2020-06-07\", \"type\": \"actual\"}, {\"ci_hi\": 13073.6865234375, \"ci_lo\": 12503.1904296875, \"mean\": 12795.029296875, \"time\": \"2020-06-07\", \"type\": \"expected\"}, {\"ci_hi\": 14703.900390625, \"ci_lo\": 14703.900390625, \"mean\": 14703.900390625, \"time\": \"2020-06-14\", \"type\": \"actual\"}, {\"ci_hi\": 14244.568359375, \"ci_lo\": 13511.4052734375, \"mean\": 13945.998046875, \"time\": \"2020-06-14\", \"type\": \"expected\"}, {\"ci_hi\": 17668.33984375, \"ci_lo\": 17668.33984375, \"mean\": 17668.33984375, \"time\": \"2020-06-21\", \"type\": \"actual\"}, {\"ci_hi\": 16095.7021484375, \"ci_lo\": 15773.4189453125, \"mean\": 15938.935546875, \"time\": \"2020-06-21\", \"type\": \"expected\"}, {\"ci_hi\": 13267.4296875, \"ci_lo\": 13267.4296875, \"mean\": 13267.4296875, \"time\": \"2020-06-28\", \"type\": \"actual\"}, {\"ci_hi\": 9460.841796875, \"ci_lo\": 8896.56640625, \"mean\": 9147.4072265625, \"time\": \"2020-06-28\", \"type\": \"expected\"}, {\"ci_hi\": 8106.56005859375, \"ci_lo\": 8106.56005859375, \"mean\": 8106.56005859375, \"time\": \"2020-07-05\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-07-05\", \"type\": \"expected\"}, {\"ci_hi\": 11182.4404296875, \"ci_lo\": 11182.4404296875, \"mean\": 11182.4404296875, \"time\": \"2020-07-12\", \"type\": \"actual\"}, {\"ci_hi\": 11755.7197265625, \"ci_lo\": 11449.5888671875, \"mean\": 11627.8984375, \"time\": \"2020-07-12\", \"type\": \"expected\"}, {\"ci_hi\": 10886.669921875, \"ci_lo\": 10886.669921875, \"mean\": 10886.669921875, \"time\": \"2020-07-19\", \"type\": \"actual\"}, {\"ci_hi\": 11844.890625, \"ci_lo\": 11533.6865234375, \"mean\": 11717.26171875, \"time\": \"2020-07-19\", \"type\": \"expected\"}, {\"ci_hi\": 11160.91015625, \"ci_lo\": 11160.91015625, \"mean\": 11160.91015625, \"time\": \"2020-07-26\", \"type\": \"actual\"}, {\"ci_hi\": 12024.2275390625, \"ci_lo\": 11706.8271484375, \"mean\": 11887.669921875, \"time\": \"2020-07-26\", \"type\": \"expected\"}, {\"ci_hi\": 7160.31005859375, \"ci_lo\": 7160.31005859375, \"mean\": 7160.31005859375, \"time\": \"2020-08-02\", \"type\": \"actual\"}, {\"ci_hi\": 9196.7294921875, \"ci_lo\": 8717.0185546875, \"mean\": 8903.6220703125, \"time\": \"2020-08-02\", \"type\": \"expected\"}, {\"ci_hi\": 14452.1298828125, \"ci_lo\": 14452.1298828125, \"mean\": 14452.1298828125, \"time\": \"2020-08-09\", \"type\": \"actual\"}, {\"ci_hi\": 15554.93359375, \"ci_lo\": 15203.021484375, \"mean\": 15374.740234375, \"time\": \"2020-08-09\", \"type\": \"expected\"}, {\"ci_hi\": 11189.8701171875, \"ci_lo\": 11189.8701171875, \"mean\": 11189.8701171875, \"time\": \"2020-08-16\", \"type\": \"actual\"}, {\"ci_hi\": 9712.9775390625, \"ci_lo\": 9168.46484375, \"mean\": 9468.853515625, \"time\": \"2020-08-16\", \"type\": \"expected\"}, {\"ci_hi\": 15012.919921875, \"ci_lo\": 15012.919921875, \"mean\": 15012.919921875, \"time\": \"2020-08-23\", \"type\": \"actual\"}, {\"ci_hi\": 14440.0888671875, \"ci_lo\": 14109.048828125, \"mean\": 14247.1533203125, \"time\": \"2020-08-23\", \"type\": \"expected\"}, {\"ci_hi\": 8606.26953125, \"ci_lo\": 8606.26953125, \"mean\": 8606.26953125, \"time\": \"2020-08-30\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-08-30\", \"type\": \"expected\"}, {\"ci_hi\": 5991.27001953125, \"ci_lo\": 5991.27001953125, \"mean\": 5991.27001953125, \"time\": \"2020-09-06\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-09-06\", \"type\": \"expected\"}, {\"ci_hi\": 8239.0595703125, \"ci_lo\": 8239.0595703125, \"mean\": 8239.0595703125, \"time\": \"2020-09-13\", \"type\": \"actual\"}, {\"ci_hi\": 9457.5849609375, \"ci_lo\": 8894.4892578125, \"mean\": 9144.388671875, \"time\": \"2020-09-13\", \"type\": \"expected\"}, {\"ci_hi\": 5561.9501953125, \"ci_lo\": 5561.9501953125, \"mean\": 5561.9501953125, \"time\": \"2020-09-20\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-09-20\", \"type\": \"expected\"}, {\"ci_hi\": 9797.259765625, \"ci_lo\": 9797.259765625, \"mean\": 9797.259765625, \"time\": \"2020-09-27\", \"type\": \"actual\"}, {\"ci_hi\": 11381.494140625, \"ci_lo\": 11071.40625, \"mean\": 11220.5810546875, \"time\": \"2020-09-27\", \"type\": \"expected\"}, {\"ci_hi\": 14673.8095703125, \"ci_lo\": 14673.8095703125, \"mean\": 14673.8095703125, \"time\": \"2020-10-04\", \"type\": \"actual\"}, {\"ci_hi\": 15575.87890625, \"ci_lo\": 15234.84375, \"mean\": 15400.703125, \"time\": \"2020-10-04\", \"type\": \"expected\"}, {\"ci_hi\": 11598.349609375, \"ci_lo\": 11598.349609375, \"mean\": 11598.349609375, \"time\": \"2020-10-11\", \"type\": \"actual\"}, {\"ci_hi\": 9428.5458984375, \"ci_lo\": 8875.9287109375, \"mean\": 9117.4794921875, \"time\": \"2020-10-11\", \"type\": \"expected\"}, {\"ci_hi\": 13368.1201171875, \"ci_lo\": 13368.1201171875, \"mean\": 13368.1201171875, \"time\": \"2020-10-18\", \"type\": \"actual\"}, {\"ci_hi\": 13494.912109375, \"ci_lo\": 12675.3173828125, \"mean\": 13093.62109375, \"time\": \"2020-10-18\", \"type\": \"expected\"}, {\"ci_hi\": 14428.1396484375, \"ci_lo\": 14428.1396484375, \"mean\": 14428.1396484375, \"time\": \"2020-10-25\", \"type\": \"actual\"}, {\"ci_hi\": 13651.7578125, \"ci_lo\": 12968.220703125, \"mean\": 13264.6279296875, \"time\": \"2020-10-25\", \"type\": \"expected\"}, {\"ci_hi\": 11172.83984375, \"ci_lo\": 11172.83984375, \"mean\": 11172.83984375, \"time\": \"2020-11-01\", \"type\": \"actual\"}, {\"ci_hi\": 9420.861328125, \"ci_lo\": 8920.1826171875, \"mean\": 9210.08203125, \"time\": \"2020-11-01\", \"type\": \"expected\"}, {\"ci_hi\": 6340.56005859375, \"ci_lo\": 6340.56005859375, \"mean\": 6340.56005859375, \"time\": \"2020-11-08\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-11-08\", \"type\": \"expected\"}, {\"ci_hi\": 8095.3798828125, \"ci_lo\": 8095.3798828125, \"mean\": 8095.3798828125, \"time\": \"2020-11-15\", \"type\": \"actual\"}, {\"ci_hi\": 9148.849609375, \"ci_lo\": 8675.1640625, \"mean\": 8859.64453125, \"time\": \"2020-11-15\", \"type\": \"expected\"}, {\"ci_hi\": 9268.66015625, \"ci_lo\": 9268.66015625, \"mean\": 9268.66015625, \"time\": \"2020-11-22\", \"type\": \"actual\"}, {\"ci_hi\": 11268.6796875, \"ci_lo\": 10972.154296875, \"mean\": 11124.8359375, \"time\": \"2020-11-22\", \"type\": \"expected\"}, {\"ci_hi\": 4532.330078125, \"ci_lo\": 4532.330078125, \"mean\": 4532.330078125, \"time\": \"2020-11-29\", \"type\": \"actual\"}, {\"ci_hi\": 6896.478515625, \"ci_lo\": 6621.6943359375, \"mean\": 6754.91943359375, \"time\": \"2020-11-29\", \"type\": \"expected\"}, {\"ci_hi\": 10982.6201171875, \"ci_lo\": 10982.6201171875, \"mean\": 10982.6201171875, \"time\": \"2020-12-06\", \"type\": \"actual\"}, {\"ci_hi\": 11604.88671875, \"ci_lo\": 11277.9189453125, \"mean\": 11463.2607421875, \"time\": \"2020-12-06\", \"type\": \"expected\"}, {\"ci_hi\": 8447.6396484375, \"ci_lo\": 8447.6396484375, \"mean\": 8447.6396484375, \"time\": \"2020-12-13\", \"type\": \"actual\"}, {\"ci_hi\": 9259.228515625, \"ci_lo\": 8766.296875, \"mean\": 8961.123046875, \"time\": \"2020-12-13\", \"type\": \"expected\"}, {\"ci_hi\": 7617.0498046875, \"ci_lo\": 7617.0498046875, \"mean\": 7617.0498046875, \"time\": \"2020-12-20\", \"type\": \"actual\"}, {\"ci_hi\": 9781.869140625, \"ci_lo\": 9225.6943359375, \"mean\": 9527.9013671875, \"time\": \"2020-12-20\", \"type\": \"expected\"}, {\"ci_hi\": 7610.02001953125, \"ci_lo\": 7610.02001953125, \"mean\": 7610.02001953125, \"time\": \"2020-12-27\", \"type\": \"actual\"}, {\"ci_hi\": 9263.802734375, \"ci_lo\": 8769.29296875, \"mean\": 8965.3359375, \"time\": \"2020-12-27\", \"type\": \"expected\"}, {\"ci_hi\": 7849.8798828125, \"ci_lo\": 7849.8798828125, \"mean\": 7849.8798828125, \"time\": \"2021-01-03\", \"type\": \"actual\"}, {\"ci_hi\": 9244.4697265625, \"ci_lo\": 8756.3623046875, \"mean\": 8947.5361328125, \"time\": \"2021-01-03\", \"type\": \"expected\"}, {\"ci_hi\": 7104.60986328125, \"ci_lo\": 7104.60986328125, \"mean\": 7104.60986328125, \"time\": \"2021-01-10\", \"type\": \"actual\"}, {\"ci_hi\": 9326.849609375, \"ci_lo\": 8810.376953125, \"mean\": 9023.462890625, \"time\": \"2021-01-10\", \"type\": \"expected\"}, {\"ci_hi\": 8447.400390625, \"ci_lo\": 8447.400390625, \"mean\": 8447.400390625, \"time\": \"2021-01-17\", \"type\": \"actual\"}, {\"ci_hi\": 9481.529296875, \"ci_lo\": 8909.7431640625, \"mean\": 9166.595703125, \"time\": \"2021-01-17\", \"type\": \"expected\"}, {\"ci_hi\": 7885.47998046875, \"ci_lo\": 7885.47998046875, \"mean\": 7885.47998046875, \"time\": \"2021-01-24\", \"type\": \"actual\"}, {\"ci_hi\": 9347.828125, \"ci_lo\": 8823.970703125, \"mean\": 9042.8310546875, \"time\": \"2021-01-24\", \"type\": \"expected\"}, {\"ci_hi\": 9992.419921875, \"ci_lo\": 9992.419921875, \"mean\": 9992.419921875, \"time\": \"2021-01-31\", \"type\": \"actual\"}, {\"ci_hi\": 11276.0732421875, \"ci_lo\": 10969.029296875, \"mean\": 11117.548828125, \"time\": \"2021-01-31\", \"type\": \"expected\"}, {\"ci_hi\": 11322.9501953125, \"ci_lo\": 11322.9501953125, \"mean\": 11322.9501953125, \"time\": \"2021-02-07\", \"type\": \"actual\"}, {\"ci_hi\": 11983.6357421875, \"ci_lo\": 11661.677734375, \"mean\": 11856.3916015625, \"time\": \"2021-02-07\", \"type\": \"expected\"}, {\"ci_hi\": 15977.26953125, \"ci_lo\": 15977.26953125, \"mean\": 15977.26953125, \"time\": \"2021-02-14\", \"type\": \"actual\"}, {\"ci_hi\": 16090.025390625, \"ci_lo\": 15716.7109375, \"mean\": 15920.671875, \"time\": \"2021-02-14\", \"type\": \"expected\"}, {\"ci_hi\": 14259.48046875, \"ci_lo\": 14259.48046875, \"mean\": 14259.48046875, \"time\": \"2021-02-21\", \"type\": \"actual\"}, {\"ci_hi\": 12994.9736328125, \"ci_lo\": 12433.1884765625, \"mean\": 12703.125, \"time\": \"2021-02-21\", \"type\": \"expected\"}, {\"ci_hi\": 12886.0498046875, \"ci_lo\": 12886.0498046875, \"mean\": 12886.0498046875, \"time\": \"2021-02-28\", \"type\": \"actual\"}, {\"ci_hi\": 11205.5390625, \"ci_lo\": 10895.220703125, \"mean\": 11043.87890625, \"time\": \"2021-02-28\", \"type\": \"expected\"}, {\"ci_hi\": 9131.8603515625, \"ci_lo\": 9131.8603515625, \"mean\": 9131.8603515625, \"time\": \"2021-03-07\", \"type\": \"actual\"}, {\"ci_hi\": 8688.8154296875, \"ci_lo\": 8298.7509765625, \"mean\": 8545.392578125, \"time\": \"2021-03-07\", \"type\": \"expected\"}, {\"ci_hi\": 10953.3896484375, \"ci_lo\": 10953.3896484375, \"mean\": 10953.3896484375, \"time\": \"2021-03-14\", \"type\": \"actual\"}, {\"ci_hi\": 11240.048828125, \"ci_lo\": 10934.2373046875, \"mean\": 11100.1552734375, \"time\": \"2021-03-14\", \"type\": \"expected\"}, {\"ci_hi\": 8574.23046875, \"ci_lo\": 8574.23046875, \"mean\": 8574.23046875, \"time\": \"2021-03-21\", \"type\": \"actual\"}, {\"ci_hi\": 9443.330078125, \"ci_lo\": 8885.38671875, \"mean\": 9131.17578125, \"time\": \"2021-03-21\", \"type\": \"expected\"}, {\"ci_hi\": 14958.0498046875, \"ci_lo\": 14958.0498046875, \"mean\": 14958.0498046875, \"time\": \"2021-03-28\", \"type\": \"actual\"}, {\"ci_hi\": 16223.31640625, \"ci_lo\": 15736.7119140625, \"mean\": 16006.1513671875, \"time\": \"2021-03-28\", \"type\": \"expected\"}, {\"ci_hi\": 13543.2099609375, \"ci_lo\": 13543.2099609375, \"mean\": 13543.2099609375, \"time\": \"2021-04-04\", \"type\": \"actual\"}, {\"ci_hi\": 11834.1806640625, \"ci_lo\": 11498.279296875, \"mean\": 11695.095703125, \"time\": \"2021-04-04\", \"type\": \"expected\"}, {\"ci_hi\": 13867.080078125, \"ci_lo\": 13867.080078125, \"mean\": 13867.080078125, \"time\": \"2021-04-11\", \"type\": \"actual\"}, {\"ci_hi\": 13525.8447265625, \"ci_lo\": 12698.9287109375, \"mean\": 13126.068359375, \"time\": \"2021-04-11\", \"type\": \"expected\"}, {\"ci_hi\": 13854.919921875, \"ci_lo\": 13854.919921875, \"mean\": 13854.919921875, \"time\": \"2021-04-18\", \"type\": \"actual\"}, {\"ci_hi\": 11976.107421875, \"ci_lo\": 11611.9853515625, \"mean\": 11825.587890625, \"time\": \"2021-04-18\", \"type\": \"expected\"}, {\"ci_hi\": 10895.2197265625, \"ci_lo\": 10895.2197265625, \"mean\": 10895.2197265625, \"time\": \"2021-04-25\", \"type\": \"actual\"}, {\"ci_hi\": 9420.9150390625, \"ci_lo\": 8871.0390625, \"mean\": 9110.4130859375, \"time\": \"2021-04-25\", \"type\": \"expected\"}, {\"ci_hi\": 7854.39990234375, \"ci_lo\": 7854.39990234375, \"mean\": 7854.39990234375, \"time\": \"2021-05-02\", \"type\": \"actual\"}, {\"ci_hi\": 9163.5146484375, \"ci_lo\": 8687.974609375, \"mean\": 8873.107421875, \"time\": \"2021-05-02\", \"type\": \"expected\"}, {\"ci_hi\": 7405.5400390625, \"ci_lo\": 7405.5400390625, \"mean\": 7405.5400390625, \"time\": \"2021-05-09\", \"type\": \"actual\"}, {\"ci_hi\": 9290.9052734375, \"ci_lo\": 8786.99609375, \"mean\": 8990.30859375, \"time\": \"2021-05-09\", \"type\": \"expected\"}, {\"ci_hi\": 7705.259765625, \"ci_lo\": 7705.259765625, \"mean\": 7705.259765625, \"time\": \"2021-05-16\", \"type\": \"actual\"}, {\"ci_hi\": 9133.013671875, \"ci_lo\": 8675.3994140625, \"mean\": 8950.904296875, \"time\": \"2021-05-16\", \"type\": \"expected\"}, {\"ci_hi\": 10888.41015625, \"ci_lo\": 10888.41015625, \"mean\": 10888.41015625, \"time\": \"2021-05-23\", \"type\": \"actual\"}, {\"ci_hi\": 11701.6552734375, \"ci_lo\": 11400.880859375, \"mean\": 11573.5732421875, \"time\": \"2021-05-23\", \"type\": \"expected\"}, {\"ci_hi\": 7715.6298828125, \"ci_lo\": 7715.6298828125, \"mean\": 7715.6298828125, \"time\": \"2021-05-30\", \"type\": \"actual\"}, {\"ci_hi\": 9044.2568359375, \"ci_lo\": 8584.01171875, \"mean\": 8763.779296875, \"time\": \"2021-05-30\", \"type\": \"expected\"}, {\"ci_hi\": 10581.7197265625, \"ci_lo\": 10581.7197265625, \"mean\": 10581.7197265625, \"time\": \"2021-06-06\", \"type\": \"actual\"}, {\"ci_hi\": 12065.9580078125, \"ci_lo\": 11745.177734375, \"mean\": 11920.2607421875, \"time\": \"2021-06-06\", \"type\": \"expected\"}, {\"ci_hi\": 11218.580078125, \"ci_lo\": 11218.580078125, \"mean\": 11218.580078125, \"time\": \"2021-06-13\", \"type\": \"actual\"}, {\"ci_hi\": 11886.1865234375, \"ci_lo\": 11528.787109375, \"mean\": 11736.685546875, \"time\": \"2021-06-13\", \"type\": \"expected\"}, {\"ci_hi\": 12789.7001953125, \"ci_lo\": 12789.7001953125, \"mean\": 12789.7001953125, \"time\": \"2021-06-20\", \"type\": \"actual\"}, {\"ci_hi\": 12933.5185546875, \"ci_lo\": 12419.943359375, \"mean\": 12666.0576171875, \"time\": \"2021-06-20\", \"type\": \"expected\"}, {\"ci_hi\": 9923.23046875, \"ci_lo\": 9923.23046875, \"mean\": 9923.23046875, \"time\": \"2021-06-27\", \"type\": \"actual\"}, {\"ci_hi\": 9292.369140625, \"ci_lo\": 8787.951171875, \"mean\": 8991.658203125, \"time\": \"2021-06-27\", \"type\": \"expected\"}, {\"ci_hi\": 9781.830078125, \"ci_lo\": 9781.830078125, \"mean\": 9781.830078125, \"time\": \"2021-07-04\", \"type\": \"actual\"}, {\"ci_hi\": 10772.7041015625, \"ci_lo\": 10446.51171875, \"mean\": 10590.9365234375, \"time\": \"2021-07-04\", \"type\": \"expected\"}, {\"ci_hi\": 11570.6201171875, \"ci_lo\": 11570.6201171875, \"mean\": 11570.6201171875, \"time\": \"2021-07-11\", \"type\": \"actual\"}, {\"ci_hi\": 11825.0390625, \"ci_lo\": 11414.0224609375, \"mean\": 11552.720703125, \"time\": \"2021-07-11\", \"type\": \"expected\"}, {\"ci_hi\": 12294.5400390625, \"ci_lo\": 12294.5400390625, \"mean\": 12294.5400390625, \"time\": \"2021-07-18\", \"type\": \"actual\"}, {\"ci_hi\": 13538.9736328125, \"ci_lo\": 12739.7275390625, \"mean\": 13171.4580078125, \"time\": \"2021-07-18\", \"type\": \"expected\"}, {\"ci_hi\": 9745.900390625, \"ci_lo\": 9745.900390625, \"mean\": 9745.900390625, \"time\": \"2021-07-25\", \"type\": \"actual\"}, {\"ci_hi\": 9245.9140625, \"ci_lo\": 8757.3671875, \"mean\": 8948.8642578125, \"time\": \"2021-07-25\", \"type\": \"expected\"}, {\"ci_hi\": 11918.41015625, \"ci_lo\": 11918.41015625, \"mean\": 11918.41015625, \"time\": \"2021-08-01\", \"type\": \"actual\"}, {\"ci_hi\": 11282.0537109375, \"ci_lo\": 10964.9423828125, \"mean\": 11114.025390625, \"time\": \"2021-08-01\", \"type\": \"expected\"}, {\"ci_hi\": 10983.400390625, \"ci_lo\": 10983.400390625, \"mean\": 10983.400390625, \"time\": \"2021-08-08\", \"type\": \"actual\"}, {\"ci_hi\": 11336.5478515625, \"ci_lo\": 11042.8203125, \"mean\": 11206.921875, \"time\": \"2021-08-08\", \"type\": \"expected\"}, {\"ci_hi\": 8944.740234375, \"ci_lo\": 8944.740234375, \"mean\": 8944.740234375, \"time\": \"2021-08-15\", \"type\": \"actual\"}, {\"ci_hi\": 10379.7294921875, \"ci_lo\": 10130.376953125, \"mean\": 10218.501953125, \"time\": \"2021-08-15\", \"type\": \"expected\"}, {\"ci_hi\": 13131.490234375, \"ci_lo\": 13131.490234375, \"mean\": 13131.490234375, \"time\": \"2021-08-22\", \"type\": \"actual\"}, {\"ci_hi\": 13910.8955078125, \"ci_lo\": 12883.2802734375, \"mean\": 13429.185546875, \"time\": \"2021-08-22\", \"type\": \"expected\"}, {\"ci_hi\": 14669.400390625, \"ci_lo\": 14669.400390625, \"mean\": 14669.400390625, \"time\": \"2021-08-29\", \"type\": \"actual\"}, {\"ci_hi\": 12591.7177734375, \"ci_lo\": 12140.71484375, \"mean\": 12329.2822265625, \"time\": \"2021-08-29\", \"type\": \"expected\"}, {\"ci_hi\": 13843.330078125, \"ci_lo\": 13843.330078125, \"mean\": 13843.330078125, \"time\": \"2021-09-05\", \"type\": \"actual\"}, {\"ci_hi\": 13210.2451171875, \"ci_lo\": 12559.6513671875, \"mean\": 12891.7685546875, \"time\": \"2021-09-05\", \"type\": \"expected\"}, {\"ci_hi\": 14024.5302734375, \"ci_lo\": 14024.5302734375, \"mean\": 14024.5302734375, \"time\": \"2021-09-12\", \"type\": \"actual\"}, {\"ci_hi\": 11507.478515625, \"ci_lo\": 11173.865234375, \"mean\": 11358.7802734375, \"time\": \"2021-09-12\", \"type\": \"expected\"}, {\"ci_hi\": 13315.7900390625, \"ci_lo\": 13315.7900390625, \"mean\": 13315.7900390625, \"time\": \"2021-09-19\", \"type\": \"actual\"}, {\"ci_hi\": 12794.0908203125, \"ci_lo\": 12284.439453125, \"mean\": 12520.2548828125, \"time\": \"2021-09-19\", \"type\": \"expected\"}, {\"ci_hi\": 10237.240234375, \"ci_lo\": 10237.240234375, \"mean\": 10237.240234375, \"time\": \"2021-09-26\", \"type\": \"actual\"}, {\"ci_hi\": 9363.837890625, \"ci_lo\": 8872.091796875, \"mean\": 9159.4541015625, \"time\": \"2021-09-26\", \"type\": \"expected\"}, {\"ci_hi\": 9030.169921875, \"ci_lo\": 9030.169921875, \"mean\": 9030.169921875, \"time\": \"2021-10-03\", \"type\": \"actual\"}, {\"ci_hi\": 9086.2421875, \"ci_lo\": 8620.5556640625, \"mean\": 8802.228515625, \"time\": \"2021-10-03\", \"type\": \"expected\"}, {\"ci_hi\": 15904.1103515625, \"ci_lo\": 15904.1103515625, \"mean\": 15904.1103515625, \"time\": \"2021-10-10\", \"type\": \"actual\"}, {\"ci_hi\": 16015.7578125, \"ci_lo\": 15491.2373046875, \"mean\": 15778.09375, \"time\": \"2021-10-10\", \"type\": \"expected\"}, {\"ci_hi\": 12839.2900390625, \"ci_lo\": 12839.2900390625, \"mean\": 12839.2900390625, \"time\": \"2021-10-17\", \"type\": \"actual\"}, {\"ci_hi\": 11436.072265625, \"ci_lo\": 11142.8271484375, \"mean\": 11307.4951171875, \"time\": \"2021-10-17\", \"type\": \"expected\"}, {\"ci_hi\": 9063.4501953125, \"ci_lo\": 9063.4501953125, \"mean\": 9063.4501953125, \"time\": \"2021-10-24\", \"type\": \"actual\"}, {\"ci_hi\": 9099.31640625, \"ci_lo\": 8631.9462890625, \"mean\": 8814.2099609375, \"time\": \"2021-10-24\", \"type\": \"expected\"}, {\"ci_hi\": 7250.2099609375, \"ci_lo\": 7250.2099609375, \"mean\": 7250.2099609375, \"time\": \"2021-10-31\", \"type\": \"actual\"}, {\"ci_hi\": 9222.029296875, \"ci_lo\": 8739.1689453125, \"mean\": 8926.8857421875, \"time\": \"2021-10-31\", \"type\": \"expected\"}]}, \"layer\": [{\"encoding\": {\"color\": {\"field\": \"type\", \"scale\": {\"domain\": [\"expected\", \"actual\"], \"range\": [\"#6366f1\", \"#10b981\"]}, \"type\": \"nominal\"}, \"x\": {\"axis\": {\"domainColor\": \"#DADCE0\", \"format\": \"%Y %b\", \"grid\": false, \"tickCount\": 8}, \"field\": \"time\", \"title\": \"Time period\", \"type\": \"temporal\"}, \"y\": {\"axis\": {\"domain\": false, \"labelExpr\": \"replace(format(datum.value, '.3~s'), 'G', 'B')\", \"labelPadding\": 10, \"tickCount\": 5, \"ticks\": false, \"titleAlign\": \"left\", \"titleAngle\": 0, \"titleY\": -20}, \"field\": \"mean\", \"title\": \"Revenue\", \"type\": \"quantitative\"}}, \"mark\": {\"type\": \"line\"}}, {\"encoding\": {\"color\": {\"field\": \"type\", \"legend\": null, \"scale\": {\"domain\": [\"expected\"], \"range\": [\"#6366f1\"]}, \"type\": \"nominal\"}, \"x\": {\"field\": \"time\", \"type\": \"temporal\"}, \"y\": {\"field\": \"ci_hi\", \"type\": \"quantitative\"}, \"y2\": {\"field\": \"ci_lo\"}}, \"mark\": {\"opacity\": 0.3, \"type\": \"area\"}}], \"resolve\": {\"scale\": {\"color\": \"independent\"}}, \"title\": null, \"width\": 700}");
+    const chartDiv = document.getElementById('model-fit-chart');
+    vegaEmbed('#model-fit-chart', spec).catch(console.error);
+  })();
+</script>
+            </div>
+          </div>
+          
+          <div class="card chart-card">
+            <div class="card-header">
+              <div class="card-icon">📊</div>
+              <h2>Contribution Channel</h2>
+            </div>
+            <div class="card-content">
+              <p>Breakdown of each media channel's contribution (baseline and marketing channels) to overall performance, showing the relative impact of each source.</p>
+              <chart>
+  <chart-embed id="contribution-channel-chart"></chart-embed>
+  
+    
+  
+</chart>
+
+<script type="text/javascript">
+  (() => {
+    const opt = {
+      mode: 'vega-lite',
+      width: 'container',
+      autosize: { type: 'fit', contains: 'padding' }
+    };
+    const spec = JSON.parse("{\"$schema\": \"https://vega.github.io/schema/vega-lite/v5.20.1.json\", \"config\": {\"axis\": {\"labelColor\": \"#5F6368\", \"labelFont\": \"Roboto\", \"labelFontSize\": 12, \"titleColor\": \"#5F6368\", \"titleFont\": \"Roboto\", \"titleFontSize\": 12, \"titleFontWeight\": \"normal\", \"titlePadding\": 10}, \"view\": {\"continuousHeight\": 300, \"continuousWidth\": 300, \"strokeOpacity\": 0}}, \"data\": {\"name\": \"data-b5ed6cda23f7ba09085a3aa67f21437f\"}, \"datasets\": {\"data-b5ed6cda23f7ba09085a3aa67f21437f\": [{\"channel\": \"BASELINE\", \"incremental_outcome\": 1350983.75, \"outcome_text\": \"63.3% (1M)\", \"pct_of_contribution\": 0.632933497428894}, {\"channel\": \"GOOGLE ADS\", \"incremental_outcome\": 343774.6875, \"outcome_text\": \"16.1% (344k)\", \"pct_of_contribution\": 0.16105782985687256}, {\"channel\": \"FACEBOOK\", \"incremental_outcome\": 220233.921875, \"outcome_text\": \"10.3% (220k)\", \"pct_of_contribution\": 0.10317918658256531}, {\"channel\": \"TIKTOK\", \"incremental_outcome\": 219487.546875, \"outcome_text\": \"10.3% (219k)\", \"pct_of_contribution\": 0.10282952338457108}]}, \"height\": 184.8, \"layer\": [{\"encoding\": {\"color\": {\"condition\": {\"test\": \"(datum.channel === 'BASELINE')\", \"value\": \"#8b5cf6\"}, \"value\": \"#6366f1\"}, \"x\": {\"axis\": {\"domain\": false, \"format\": \"%\", \"labelPadding\": 10, \"tickCount\": 5, \"ticks\": false}, \"field\": \"prev_sum\", \"title\": \"% Revenue\", \"type\": \"quantitative\"}, \"x2\": {\"field\": \"sum_outcome\"}, \"y\": {\"axis\": {\"domain\": false, \"labelPadding\": 10, \"ticks\": false}, \"field\": \"channel\", \"scale\": {\"paddingOuter\": 0.2}, \"sort\": null, \"title\": null, \"type\": \"nominal\"}}, \"mark\": {\"size\": 42, \"type\": \"bar\"}, \"transform\": [{\"window\": [{\"as\": \"sum_outcome\", \"field\": \"pct_of_contribution\", \"op\": \"sum\"}, {\"as\": \"kwargs\", \"field\": \"channel\", \"op\": \"lead\"}]}, {\"as\": \"prev_sum\", \"calculate\": \"datum.sum_outcome - datum.pct_of_contribution\"}, {\"as\": \"text_x\", \"calculate\": \"datum.incremental_outcome < 0 ? datum.prev_sum : datum.sum_outcome\"}]}, {\"encoding\": {\"text\": {\"field\": \"outcome_text\", \"type\": \"nominal\"}, \"x\": {\"field\": \"text_x\", \"type\": \"quantitative\"}, \"y\": {\"axis\": {\"domain\": false, \"labelPadding\": 10, \"ticks\": false}, \"field\": \"channel\", \"scale\": {\"paddingOuter\": 0.2}, \"sort\": null, \"title\": null, \"type\": \"nominal\"}}, \"mark\": {\"align\": \"left\", \"color\": \"#5F6368\", \"dx\": 10, \"fontSize\": 14, \"type\": \"text\"}, \"transform\": [{\"window\": [{\"as\": \"sum_outcome\", \"field\": \"pct_of_contribution\", \"op\": \"sum\"}, {\"as\": \"kwargs\", \"field\": \"channel\", \"op\": \"lead\"}]}, {\"as\": \"prev_sum\", \"calculate\": \"datum.sum_outcome - datum.pct_of_contribution\"}, {\"as\": \"text_x\", \"calculate\": \"datum.incremental_outcome < 0 ? datum.prev_sum : datum.sum_outcome\"}]}], \"title\": null, \"width\": 500}");
+    const chartDiv = document.getElementById('contribution-channel-chart');
+    vegaEmbed('#contribution-channel-chart', spec).catch(console.error);
+  })();
+</script>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2 class="section-title">Insights</h2>
+        <div class="grid-full">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">💡</div>
+              <h2>Actionable Recommendations</h2>
+            </div>
+            <div class="card-content">
+              <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px;">
+                Actionable recommendations based on your MMM model analysis to optimize your marketing decisions.
+              </p>
+              
+              <div class="insights-container">
+                
+                  <div class="insight-item info">
+                    <div class="insight-title">📈 Google Ads: Profitable channel</div>
+                    <div class="insight-description">With a ROI of 1.13, Google Ads generates a positive return on investment.</div>
+                    <div class="insight-action">Maintain or slightly increase the Google Ads budget by 5% while testing new creative approaches.</div>
+                  </div>
+                  
+                  <div class="insight-item warning">
+                    <div class="insight-title">🔍 TikTok: Channel to optimize</div>
+                    <div class="insight-description">With a ROI of 0.37, TikTok is 0.76 points below Google Ads (ROI: 1.13), 67% less performant.</div>
+                    <div class="insight-action">Analyze TikTok performance: targeted audiences, creatives, placements. Reduce budget by 33% and reallocate 20% to Google Ads.</div>
+                  </div>
+                  
+                  <div class="insight-item info">
+                    <div class="insight-title">💼 Channel diversification</div>
+                    <div class="insight-description">Your channels show varied ROI (from 0.37 to 1.13), with a gap of 0.76 points (67% variation), indicating optimization opportunities.</div>
+                    <div class="insight-action">Reallocate 22% of budget from underperforming channels to the most profitable ones, while maintaining minimal presence to test new opportunities.</div>
+                  </div>
+                  
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      function toggleR2Info() {
+        const dropdown = document.getElementById('r2-dropdown');
+        const button = event.currentTarget;
+        
+        if (dropdown.classList.contains('open')) {
+          dropdown.classList.remove('open');
+          button.querySelector('span').textContent = 'Info';
+        } else {
+          dropdown.classList.add('open');
+          button.querySelector('span').textContent = 'Hide';
+        }
+      }
+    </script>
+  </body>
+</html>
